@@ -19,7 +19,8 @@ Building
 ========
 
  * Python 2.6 or later and Cython 0.17.
- * GLFW v3.0 (not released, must be build from repo)
+ * The geotools_ library.
+ * GLFW_ v3.0 (not released, must be build from repo)
  * OpenGL headers
  
 The extension have only been build on the Linux platform.
@@ -28,3 +29,7 @@ Documentation
 =============
 
 ToDo
+
+.. _geotools: http://github.com/tenko/geotools
+
+.. _GLFW: http://github.com/elmindreda/glfw
