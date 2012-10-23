@@ -1,0 +1,192 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of gltools - See LICENSE.txt
+#
+cdef class ColorRGBA:
+    '''RGBA color'''
+    def __init__(self, GLubyte red = 255, GLubyte green = 255, GLubyte blue = 255,
+                       GLubyte alpha = 255):
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    
+    def __str__(self):
+        return "ColorRGBA%s" % repr(self)
+    
+    def __repr__(self):
+        args = self.red, self.green, self.blue, self.alpha
+        return "(red=%d, green=%d, blue=%d, alpha=%d)" % args
+    
+    def __len__(self):
+        return 4
+    
+    def __getitem__(self, int key):
+        if key == 0:
+            return self.red
+        elif key == 1:
+            return self.green
+        elif key == 2:
+            return self.blue
+        elif key == 3:
+            return self.alpha
+        raise IndexError('index out of range')
+    
+    def __mul__(double factor, ColorRGBA rhs):
+        '''
+        Leaves alpha unchanged
+        '''
+        cdef ColorRGBA ret = ColorRGBA.__new__(ColorRGBA)
+        
+        if factor < 0.:
+            raise GLError('factor < 0.')
+            
+        ret.red   = <unsigned char>fmin(255, factor*rhs.red)
+        ret.green = <unsigned char>fmin(255, factor*rhs.green)
+        ret.blue  = <unsigned char>fmin(255, factor*rhs.blue)
+        ret.alpha = rhs.alpha
+        
+        return ret
+        
+    cpdef ColorRGBA copy(self, int red = -1, int green = -1, int blue = -1, alpha = -1):
+        cdef ColorRGBA ret = ColorRGBA.__new__(ColorRGBA)
+        
+        ret.red = self.red
+        ret.green = self.green
+        ret.blue = self.blue
+        ret.alpha = self.alpha
+        
+        if red >= 0 and red < 256:
+            ret.red = red
+        
+        if green >= 0 and green < 256:
+            ret.green = green
+        
+        if blue >= 0 and blue < 256:
+            ret.blue = blue
+        
+        if alpha >= 0 and alpha < 256:
+            ret.alpha = alpha
+            
+        return ret
+        
+    cpdef unsigned toInt(self):
+        return self.alpha << 24 | self.blue << 16 | self.green << 8 | self.red
+    
+    cpdef tuple toFloatVector(self):
+        return (self.red / 255., self.green / 255., self.blue / 255., self.alpha / 255.)
+    
+    cdef setFloatVector(self, float *vec):
+        vec[0] = self.red / 255.
+        vec[1] = self.green / 255.
+        vec[2] = self.blue / 255.
+        vec[3] = self.alpha / 255.
+        
+WHITE = ColorRGBA(255,255,255,255)
+BLACK = ColorRGBA(0,0,0,255)
+    
+cdef class Material:
+    '''
+    Abstrction of OpenGL material
+    '''
+    def __init__(self, int mode = GL_FRONT_AND_BACK, **kwargs):
+        self.mode = mode
+        self.shininess = -1.
+        
+        for name, value in kwargs.iteritems():
+            if name in {'ambient','diffuse','specular','emissive','shininess'}:
+                setattr(self, name, value)
+            else:
+                raise GLError("attribute '%s' not known")
+    
+    def __str__(self):
+        return "Material%s" % repr(self)
+    
+    def __repr__(self):
+        return "()"
+    
+    cpdef enable(self):
+        cdef float mat[4]
+        cdef int i
+        if not self.ambient is None:
+            self.ambient.setFloatVector(mat)
+            glMaterialfv(self.mode, GL_AMBIENT, mat)
+        
+        if not self.diffuse is None:
+            self.diffuse.setFloatVector(mat)
+            glMaterialfv(self.mode, GL_DIFFUSE, mat)
+        
+        if not self.specular is None:
+            self.specular.setFloatVector(mat)
+            glMaterialfv(self.mode, GL_SPECULAR, mat)
+        
+        if not self.emissive is None:
+            self.emissive.setFloatVector(mat)
+            glMaterialfv(self.mode, GL_EMISSION, mat)
+        
+        if self.shininess > 0:
+            mat[0] = fmin(fmax(0., self.shininess), 128)
+            glMaterialfv(self.mode, GL_SHININESS, mat)
+
+cdef class Light:
+    '''
+    Abstraction of OpenGL light
+    '''
+    def __init__(self, int index = 0, Material material = None,
+                 Point position = None, directional = True):
+        if index == 0:
+            self.index = GL_LIGHT0
+        elif index == 1:
+            self.index = GL_LIGHT1
+        elif index == 2:
+            self.index = GL_LIGHT2
+        elif index == 3:
+            self.index = GL_LIGHT3
+        elif index == 4:
+            self.index = GL_LIGHT4
+        elif index == 5:
+            self.index = GL_LIGHT5
+        elif index == 6:
+            self.index = GL_LIGHT6
+        elif index == 7:
+            self.index = GL_LIGHT7
+        else:
+            raise GLError('Light index out of range (0-7)')
+        
+        self.material = material
+        self.position = position
+        self.directional = directional
+    
+    def __str__(self):
+        return "Light%s" % repr(self)
+    
+    def __repr__(self):
+        return "()"
+        
+    cpdef enable(self):
+        cdef float mat[4]
+        
+        glEnable(self.index)
+        
+        if not self.material.ambient is None:
+            self.material.ambient.setFloatVector(mat)
+            glLightfv(self.index, GL_AMBIENT, mat)
+        
+        if not self.material.diffuse is None:
+            self.material.diffuse.setFloatVector(mat)
+            glLightfv(self.index, GL_DIFFUSE, mat)
+            
+        if not self.material.specular is None:
+            self.material.specular.setFloatVector(mat)
+            glLightfv(self.index, GL_SPECULAR, mat)
+        
+        if not self.position is None:
+            mat[0], mat[1], mat[2] = self.position
+            if self.directional:
+                mat[3] = 0.
+            else:
+                mat[3] = 1.
+            glLightfv(self.index, GL_POSITION, mat)
+        
+    cpdef disable(self):
+        glDisable(self.index)
