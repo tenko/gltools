@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import math
 import array
 import geotools as geo
 import gltools as gl
@@ -102,6 +103,7 @@ class MainWindow(gl.Window):
         self.initialized = False
         
         self.cam = geo.Camera()
+        
         self.near = geo.Point(-2.,-2.,-2.)
         self.far = geo.Point(2.,2.,2.)
         
@@ -307,18 +309,11 @@ class MainWindow(gl.Window):
             # rotate view
             dx = x - lastx
             dy = y - lasty
-            
-            if dx != 0:
-                cam.rotateCamera(0.001*dx, geo.Vector(0.,0.,1.), cam.target)
-            
-            if dy != 0:
-                cam.rotateCamera(0.001*dy, cam.X, cam.target)
+            cam.rotateDeltas(dx, dy)
         
         elif not ui and self.currentButton == gl.MOUSE.RIGHT:
             # pan view
-            d = geo.dot(geo.Vector(cam.Loc - cam.target), cam.Z)
-            dolly_vector = cam.getDollyCameraVector(lastx,lasty,x,y,d)
-            cam.Loc += dolly_vector
+            cam.pan(lastx,lasty,x,y)
             
         #print 'onCursorPos ', x, y
         self.lastPos = x, y
