@@ -2,7 +2,7 @@ Introduction
 ============
 
 gltools is library for quickly creating OpenGL based
-application with support for:
+application in Python/Cython with support for:
 
  * Access to vertex buffers and GLSL shaders
  * Access to truetype fonts
@@ -28,7 +28,9 @@ The extension have only been build on the Linux platform.
 Documentation
 =============
 
-ToDo
+See online Sphinx docs_
+
+.. _docs: http://tenko.github.com/gltools/index.html
 
 .. _geotools: http://github.com/tenko/geotools
 

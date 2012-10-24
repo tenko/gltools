@@ -1,0 +1,15 @@
+# build folders
+gltools/build/
+gltool/@docs/build/
+gltool/@docs/html/
+# compiled python files
+*.pyc
+*.pyo
+# python extension modules
+*.pyd
+*.so
+# libraries
+*.dll
+*.a
+# object files
+*.o

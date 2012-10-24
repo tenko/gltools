@@ -2,6 +2,9 @@
 from imguiLib cimport *
 
 cdef class UI:
+    '''
+    Draw UI elements
+    '''
     def __init__(self):
         self.scrollIdx = 0
         imguiRenderGLInit()
@@ -10,13 +13,22 @@ cdef class UI:
             raise GLError(errorMessage)
     
     cpdef bint anyActive(self):
+        '''
+        Return true if any ui element is active
+        '''
         return imguiAnyActive()
         
     cpdef flush(self):
+        '''
+        Flush drawing pipeline
+        '''
         self.scrollIdx = 0
         imguiRenderGLDraw()
     
     cpdef beginFrame(self, int mx, int my, char mbut, int scroll):
+        '''
+        Start frame
+        '''
         if mbut == GLFW_MOUSE_BUTTON_LEFT:
             mbut = IMGUI_MBUT_LEFT
         elif mbut == GLFW_MOUSE_BUTTON_RIGHT:
@@ -27,9 +39,17 @@ cdef class UI:
         imguiBeginFrame(mx, my, mbut, scroll)
     
     cpdef endFrame(self):
+        '''
+        End frame
+        '''
         imguiEndFrame()
         
     cpdef bint beginScrollArea(self, name, int x, int y, int w, int h):
+        '''
+        Begin scroll area
+        
+        Up to 10 scroll areas can be used, but not nested.
+        '''
         cdef char *c_name
         cdef bint ret
         
@@ -44,21 +64,39 @@ cdef class UI:
         return ret
         
     cpdef endScrollArea(self):
+        '''
+        End scroll area
+        '''
         imguiEndScrollArea()
 
     cpdef indent(self):
+        '''
+        Indent current x position
+        '''
         imguiIndent()
         
     cpdef unindent(self):
+        '''
+        Unindent current x position
+        '''
         imguiUnindent()
         
     cpdef separator(self):
+        '''
+        Add horisontal separator space
+        '''
         imguiSeparator()
 
     cpdef separatorLine(self):
+        '''
+        Add horisontal separator line
+        '''
         imguiSeparatorLine()
         
     cpdef bint button(self, text, bint enabled):
+        '''
+        Button element
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -67,6 +105,9 @@ cdef class UI:
         return imguiButton(c_text, enabled)
 
     cpdef bint item(self, text, bint enabled):
+        '''
+        Item element
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -76,6 +117,9 @@ cdef class UI:
 
 
     cpdef bint check(self, text, bint checked, bint enabled):
+        '''
+        Check box element
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -85,6 +129,9 @@ cdef class UI:
 
 
     cpdef bint collapse(self, text, char* subtext, bint checked, bint enabled):
+        '''
+        Collapse element
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -93,6 +140,9 @@ cdef class UI:
         return imguiCollapse(c_text, subtext, checked, enabled)
 
     cpdef label(self, text):
+        '''
+        Text label (left aligned)
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -101,6 +151,9 @@ cdef class UI:
         imguiLabel(c_text)
 
     cpdef value(self, text):
+        '''
+        Text label (right aligned)
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -110,6 +163,9 @@ cdef class UI:
 
     cpdef float slider(self, text, float val, float vmin, float vmax,
                        float vinc, bint enabled):
+        '''
+        Horisontal slider
+        '''
         cdef float c_val = val
         cdef char *c_text
         
@@ -120,6 +176,9 @@ cdef class UI:
         return c_val
 
     cpdef drawText(self, int x, int y, int align, text, ColorRGBA color):
+        '''
+        Draw text
+        '''
         cdef char *c_text
         
         bytetext = unicode(text).encode('UTF-8','ignore')
@@ -129,11 +188,20 @@ cdef class UI:
 
 
     cpdef drawLine(self, float x0, float y0, float x1, float y1, float r, ColorRGBA color):
+        '''
+        Draw single line
+        '''
         imguiDrawLine(x0, y0, x1, y1, r, color.toInt())
 
 
     cpdef drawRoundedRect(self, float x, float y, float w, float h, float r, ColorRGBA color):
+        '''
+        Draw rounded rectangle
+        '''
         imguiDrawRoundedRect(x, y, w, h, r, color.toInt())
 
     cpdef drawRect(self, float x, float y, float w, float h, ColorRGBA color):
+        '''
+        Draw rectangle
+        '''
         imguiDrawRect(x, y, w, h, color.toInt())

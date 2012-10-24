@@ -3,7 +3,10 @@
 # This file is part of gltools - See LICENSE.txt
 #
 cdef class ColorRGBA:
-    '''RGBA color'''
+    '''
+    RGBA color with components stored as unsigned
+    bytes.
+    '''
     def __init__(self, GLubyte red = 255, GLubyte green = 255, GLubyte blue = 255,
                        GLubyte alpha = 255):
         self.red = red
@@ -34,7 +37,7 @@ cdef class ColorRGBA:
     
     def __mul__(double factor, ColorRGBA rhs):
         '''
-        Leaves alpha unchanged
+        Scale color components and leaves alpha unchanged
         '''
         cdef ColorRGBA ret = ColorRGBA.__new__(ColorRGBA)
         
@@ -49,6 +52,9 @@ cdef class ColorRGBA:
         return ret
         
     cpdef ColorRGBA copy(self, int red = -1, int green = -1, int blue = -1, alpha = -1):
+        '''
+        Create copy with optional changes.
+        '''
         cdef ColorRGBA ret = ColorRGBA.__new__(ColorRGBA)
         
         ret.red = self.red
@@ -71,9 +77,15 @@ cdef class ColorRGBA:
         return ret
         
     cpdef unsigned toInt(self):
+        '''
+        Pack color to a single unsigned int
+        '''
         return self.alpha << 24 | self.blue << 16 | self.green << 8 | self.red
     
     cpdef tuple toFloatVector(self):
+        '''
+        Return color as float normalized [0.0 - 1.0]
+        '''
         return (self.red / 255., self.green / 255., self.blue / 255., self.alpha / 255.)
     
     cdef setFloatVector(self, float *vec):
@@ -87,7 +99,7 @@ BLACK = ColorRGBA(0,0,0,255)
     
 cdef class Material:
     '''
-    Abstrction of OpenGL material
+    Abstraction of OpenGL material
     '''
     def __init__(self, int mode = GL_FRONT_AND_BACK, **kwargs):
         self.mode = mode
@@ -106,6 +118,9 @@ cdef class Material:
         return "()"
     
     cpdef enable(self):
+        '''
+        Set OpenGL material state
+        '''
         cdef float mat[4]
         cdef int i
         if not self.ambient is None:
@@ -164,6 +179,9 @@ cdef class Light:
         return "()"
         
     cpdef enable(self):
+        '''
+        Enable light and set OpenGL state
+        '''
         cdef float mat[4]
         
         glEnable(self.index)
@@ -189,4 +207,7 @@ cdef class Light:
             glLightfv(self.index, GL_POSITION, mat)
         
     cpdef disable(self):
+        '''
+        Disable light
+        '''
         glDisable(self.index)
