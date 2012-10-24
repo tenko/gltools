@@ -56,6 +56,10 @@ UI
 openGL
 ------
 
+.. autoclass:: gltools.Image
+    :members:
+    :special-members:
+    
 .. autofunction:: gltools.InitGLExt
 
 .. autofunction:: gltools.BeginText
@@ -87,3 +91,15 @@ openGL
 .. autofunction:: gltools.LightModeli
 
 .. autofunction:: gltools.LoadIdentity
+
+.. autofunction:: gltools.LoadMatrixd
+
+.. autofunction:: gltools.MatrixMode
+
+.. autofunction:: gltools.Ortho
+
+.. autofunction:: gltools.ReadPixels
+
+.. autofunction:: gltools.PolygonMode
+
+.. autofunction:: gltools.Viewport

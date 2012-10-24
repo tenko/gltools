@@ -11,16 +11,30 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
+SRC = [
+    "gltools.pyx",
+    "@src/GLTools.cpp",
+    "@contrib/fontstash.c",
+    "@contrib/stb_image_write.c",
+    "@contrib/imgui.cpp",
+    "@contrib/imguiRenderGL.cpp"
+]
+
+DEP = \
+    ["gltools.pxd",] + \
+    glob.glob("@src/*.pxi") + \
+    glob.glob("@src/*.cpp") + \
+    glob.glob("@include/*.pxd") + \
+    glob.glob("@include/*.h")
+                              
 try:
     setup(
       name = 'gltools',
       ext_modules=[
         Extension("gltools",
-                    sources=["gltools.pyx", "@src/GLTools.cpp", "@contrib/fontstash.c",
-                             "@contrib/imgui.cpp", "@contrib/imguiRenderGL.cpp"],
-                    depends = ["gltools.pxd",] + glob.glob("@src/*.pxi") + \
-                              glob.glob("@src/*.pxd") + glob.glob("@src/*.h"),
-                    include_dirs = ['@src','@contrib'],
+                    sources=SRC,
+                    depends = DEP,
+                    include_dirs = ['@include','@src','@contrib'],
                     libraries = ["GL", "glfw"],
                     extra_compile_args = ["-fpermissive"],
                     language="c++"

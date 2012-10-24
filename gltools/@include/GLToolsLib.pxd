@@ -20,6 +20,8 @@ cdef extern from "GLTools.h":
     
     char errorMessage[256]
     
+    int stbi_write_png(char *filename, int w, int h, int comp, void *data, int stride_in_bytes)
+    
     int c_initText "initText"()
     int c_beginText "beginText"()
     int c_endText "endText"()

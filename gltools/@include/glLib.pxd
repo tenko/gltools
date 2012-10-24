@@ -34,7 +34,9 @@ cdef extern from "GL/glfw3.h":
     void glMaterialfv(GLenum face, GLenum pname, GLfloat *params)
     void glMatrixMode(GLenum mode)
     void glOrtho(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar)
+    void glPixelStorei(GLenum pname, GLint param)
     void glPolygonMode(GLenum face, GLenum mode)
+    void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels)
     void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
     
     cdef enum:
@@ -243,6 +245,11 @@ cdef extern from "GL/glfw3.h":
         # ShadingModel
         GL_FLAT
         GL_SMOOTH
+        
+        # Images
+        GL_RGB
+        GL_RGBA
+        GL_PACK_ALIGNMENT
         
         # Texture mapping
         GL_TEXTURE_1D

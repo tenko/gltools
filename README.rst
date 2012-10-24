@@ -7,6 +7,7 @@ application in Python/Cython with support for:
  * Access to vertex buffers and GLSL shaders
  * Access to truetype fonts
  * Windows handling through GLFW
+ * Saving framebuffer content to PNG file.
  * Simple GUI controls
 
 OpenGL version 2.1 is targeted which should be available

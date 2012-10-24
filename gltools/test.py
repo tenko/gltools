@@ -338,7 +338,13 @@ class MainWindow(gl.Window):
         #print 'onKey ', key, action
         if key == gl.KEY.ESCAPE:
             self.running = False
-    
+        elif key == gl.KEY.F1:
+            self.makeContextCurrent()
+            img = gl.Image(self.width, self.height, gl.RGBA)
+            gl.ReadPixels(0, 0, img)
+            img.flipY()
+            img.writePNG('screenshot01.png')
+            
     def onChar(self, ch):
         #print 'onChar ', ch
         if ch == 'f':

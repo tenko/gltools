@@ -169,7 +169,21 @@ cpdef Ortho(double left, double right, double bottom, double top, double zNear,
     :zFar: Specify the distances to the farther depth clipping plane.
     '''
     glOrtho(left, right, bottom, top, zNear, zFar)
+
+cpdef ReadPixels(int x, int y, Image img):
+    '''
+    Read a block of pixels from the frame buffer
+    '''
+    cdef  GLenum format
     
+    if img.bytesPerPixel == 3:
+        format = GL_RGB
+    else:
+        format = GL_RGBA
+    
+    glPixelStorei(GL_PACK_ALIGNMENT, 1)
+    glReadPixels(x, y, img.width, img.height, format, GL_UNSIGNED_BYTE, img._buffer)
+        
 cpdef PolygonMode(unsigned int face, unsigned int mode):
     '''
     Select a polygon rasterization mode

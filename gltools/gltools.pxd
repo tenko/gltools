@@ -117,6 +117,20 @@ cdef class UI:
     cpdef drawLine(self, float x0, float y0, float x1, float y1, float r, ColorRGBA color)
     cpdef drawRoundedRect(self, float x, float y, float w, float h, float r, ColorRGBA color)
     cpdef drawRect(self, float x, float y, float w, float h, ColorRGBA color)
+
+cdef class Image:
+    cdef unsigned char *_buffer
+    cdef readonly int width
+    cdef readonly int height
+    cdef readonly int bytesPerPixel
+    
+    # buffer interface
+    cdef Py_ssize_t __shape[1]
+    cdef Py_ssize_t __strides[1]
+    cdef __cythonbufferdefaults__ = {"ndim": 1, "mode": "c"}
+    
+    cpdef flipY(self)
+    cpdef writePNG(self, char *filename, int stride = ?)
     
 cpdef InitGLExt()
 cpdef BlendFunc(unsigned int sfactor, unsigned int dfactor)
