@@ -52,49 +52,172 @@ indices = array.array('B',(
 
 GLSL_VERTEX = \
 """
-varying vec3 vN;
-varying vec3 v;
-void main(void)  
-{     
-   v = vec3(gl_ModelViewMatrix * gl_Vertex);       
-   vN = normalize(gl_NormalMatrix * gl_Normal);
-   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;  
+varying vec3 normal;
+varying vec3 vertex;
+
+void main()
+{
+    // Calculate the normal
+    normal = normalize(gl_NormalMatrix * gl_Normal);
+   
+    // Transform the vertex position to eye space
+    vertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+       
+    gl_Position = ftransform();
 }
 """
 
 GLSL_FRAG = \
 """
-varying vec3 vN;
-varying vec3 v; 
-
 #define MAX_LIGHTS 3 
-void main (void) 
-{ 
-   vec3 N = normalize(vN);
-   vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+varying vec3 normal;
+varying vec3 vertex;
+
+float calculateAttenuation(in int i, in float dist)
+{
+    return(1.0 / (gl_LightSource[i].constantAttenuation +
+                  gl_LightSource[i].linearAttenuation * dist +
+                  gl_LightSource[i].quadraticAttenuation * dist * dist));
+}
+
+void directionalLight(in int i, in vec3 N, in float shininess,
+                      inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
+{
+    vec3 L = normalize(gl_LightSource[i].position.xyz);
    
-   for (int i=0;i<MAX_LIGHTS;i++)
-   {
-      vec3 L = normalize(gl_LightSource[i].position.xyz - v); 
-      vec3 E = normalize(-v); // we are in Eye Coordinates, so EyePos is (0,0,0) 
-      vec3 R = normalize(-reflect(L,N)); 
+    float nDotL = dot(N, L);
    
-      //calculate Ambient Term: 
-      vec4 Iamb = gl_FrontLightProduct[i].ambient; 
-      //calculate Diffuse Term: 
-      vec4 Idiff = gl_FrontLightProduct[i].diffuse * max(dot(N,L), 0.0);
-      Idiff = clamp(Idiff, 0.0, 1.0); 
+    if (nDotL > 0.0)
+    {   
+        vec3 H = gl_LightSource[i].halfVector.xyz;
+       
+        float pf = pow(max(dot(N,H), 0.0), shininess);
+
+        diffuse  += gl_LightSource[i].diffuse  * nDotL;
+        specular += gl_LightSource[i].specular * pf;
+    }
    
-      // calculate Specular Term:
-      vec4 Ispec = gl_FrontLightProduct[i].specular 
-             * pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess);
-      Ispec = clamp(Ispec, 0.0, 1.0); 
+    ambient  += gl_LightSource[i].ambient;
+}
+
+void pointLight(in int i, in vec3 N, in vec3 V, in float shininess,
+                inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
+{
+    vec3 D = gl_LightSource[i].position.xyz - V;
+    vec3 L = normalize(D);
+
+    float dist = length(D);
+    float attenuation = calculateAttenuation(i, dist);
+
+    float nDotL = dot(N,L);
+
+    if (nDotL > 0.0)
+    {   
+        vec3 E = normalize(-V);
+        vec3 R = reflect(-L, N);
+       
+        float pf = pow(max(dot(R,E), 0.0), shininess);
+
+        diffuse  += gl_LightSource[i].diffuse  * attenuation * nDotL;
+        specular += gl_LightSource[i].specular * attenuation * pf;
+    }
    
-      finalColor += Iamb + Idiff + Ispec;
-   }
+    ambient  += gl_LightSource[i].ambient * attenuation;
+}
+
+void spotLight(in int i, in vec3 N, in vec3 V, in float shininess,
+               inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
+{
+    vec3 D = gl_LightSource[i].position.xyz - V;
+    vec3 L = normalize(D);
+
+    float dist = length(D);
+    float attenuation = calculateAttenuation(i, dist);
+
+    float nDotL = dot(N,L);
+
+    if (nDotL > 0.0)
+    {   
+        float spotEffect = dot(normalize(gl_LightSource[i].spotDirection), -L);
+       
+        if (spotEffect > gl_LightSource[i].spotCosCutoff)
+        {
+            attenuation *=  pow(spotEffect, gl_LightSource[i].spotExponent);
+
+            vec3 E = normalize(-V);
+            vec3 R = reflect(-L, N);
+       
+            float pf = pow(max(dot(R,E), 0.0), shininess);
+
+            diffuse  += gl_LightSource[i].diffuse  * attenuation * nDotL;
+            specular += gl_LightSource[i].specular * attenuation * pf;
+        }
+    }
    
-   // write Total Color: 
-   gl_FragColor = gl_FrontLightModelProduct.sceneColor + finalColor; 
+    ambient  += gl_LightSource[i].ambient * attenuation;
+}
+
+void calculateLighting(in vec3 N, in vec3 V, in float shininess,
+                       inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
+{
+    // Just loop through each light, and add
+    // its contributions to the color of the pixel.
+    for (int i = 0; i < MAX_LIGHTS - 1; i++)
+    {
+        if (gl_LightSource[i].position.w == 0.0)
+            directionalLight(i, N, shininess, ambient, diffuse, specular);
+        else if (gl_LightSource[i].spotCutoff == 180.0)
+            pointLight(i, N, V, shininess, ambient, diffuse, specular);
+        else
+             spotLight(i, N, V, shininess, ambient, diffuse, specular);
+    }
+}
+
+void main()
+{
+    // Normalize the normal. A varying variable CANNOT
+    // be modified by a fragment shader. So a new variable
+    // needs to be created.
+    vec3 n = normalize(normal);
+   
+    vec4 ambient, diffuse, specular, color;
+
+    // Initialize the contributions.
+    ambient  = vec4(0.0);
+    diffuse  = vec4(0.0);
+    specular = vec4(0.0);
+   
+    // In this case the built in uniform gl_MaxLights is used
+    // to denote the number of lights. A better option may be passing
+    // in the number of lights as a uniform or replacing the current
+    // value with a smaller value.
+    calculateLighting(n, vertex, gl_FrontMaterial.shininess,
+                      ambient, diffuse, specular);
+   
+    color  = gl_FrontLightModelProduct.sceneColor  +
+             (ambient  * gl_FrontMaterial.ambient) +
+             (diffuse  * gl_FrontMaterial.diffuse) +
+             (specular * gl_FrontMaterial.specular);
+
+    // Re-initialize the contributions for the back
+    // pass over the lights
+    ambient  = vec4(0.0);
+    diffuse  = vec4(0.0);
+    specular = vec4(0.0);
+          
+    // Now caculate the back contribution. All that needs to be
+    // done is to flip the normal.
+    calculateLighting(-n, vertex, gl_BackMaterial.shininess,
+                      ambient, diffuse, specular);
+
+    color += gl_BackLightModelProduct.sceneColor  +
+             (ambient  * gl_BackMaterial.ambient) +
+             (diffuse  * gl_BackMaterial.diffuse) +
+             (specular * gl_BackMaterial.specular);
+
+    color = clamp(color, 0.0, 1.0);
+   
+    gl_FragColor = color;
 }
 """
 
@@ -108,6 +231,8 @@ class MainWindow(gl.Window):
         self.far = geo.Point(2.,2.,2.)
         
         self.lastPos = 0,0
+        self.mouseCenter = geo.Point()
+        self.uiScroll = 0
         self.currentButton = -1
         
         gl.Window.__init__(self, width, height, title)
@@ -262,7 +387,11 @@ class MainWindow(gl.Window):
         gl.MatrixMode(gl.MODELVIEW)
         gl.LoadIdentity()
         
-        ui.beginFrame(x,h - y,self.currentButton,0)
+        scroll = self.uiScroll
+        if scroll:
+            self.uiScroll = 0
+        
+        ui.beginFrame(x,h - y,self.currentButton,scroll)
         ui.beginScrollArea("Scroll Area", 10, 10, 200, h-300)
         
         ui.label('Label test')
@@ -304,16 +433,16 @@ class MainWindow(gl.Window):
         cam = self.cam
         
         ui = self.insideUI(x, y)
-        
+            
         if not ui and self.currentButton == gl.MOUSE.LEFT:
             # rotate view
             dx = x - lastx
             dy = y - lasty
-            cam.rotateDeltas(dx, dy)
+            cam.rotateDeltas(dx, dy, target = self.mouseCenter)
         
         elif not ui and self.currentButton == gl.MOUSE.RIGHT:
             # pan view
-            cam.pan(lastx,lasty,x,y)
+            cam.pan(lastx, lasty, x, y, target = self.mouseCenter)
             
         #print 'onCursorPos ', x, y
         self.lastPos = x, y
@@ -323,6 +452,8 @@ class MainWindow(gl.Window):
         #print 'onMouseButton ', button, action
         if action == gl.ACTION.PRESS:
             if button in {gl.MOUSE.LEFT, gl.MOUSE.RIGHT}:
+                # temporary rotation center to avoid exponential increase
+                self.mouseCenter.set(self.cam.target)
                 self.currentButton = button
         else:
             self.currentButton = -1
@@ -348,15 +479,15 @@ class MainWindow(gl.Window):
         
     def onScroll(self, scx, scy):
         x, y = self.lastPos
+        self.uiScroll = -int(scy)
         
-        if self.insideUI(x, y):
-            return
-        
-        delta = 1e-4*scy
-        dx = delta*self.width
-        dy = delta*self.height
-        
-        self.cam.zoomFactor(1. + max(dx,dy), (x, y))
+        if not self.insideUI(x, y):        
+            delta = 1e-4*scy
+            dx = delta*self.width
+            dy = delta*self.height
+            
+            self.cam.zoomFactor(1. + max(dx,dy), (x, y))
+            
         self.onRefresh()
         
     def onClose(self):

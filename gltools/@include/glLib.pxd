@@ -27,6 +27,7 @@ cdef extern from "GL/glfw3.h":
     void glDrawElements(GLenum mode, GLsizei count, GLenum type, GLvoid *indices)
     void glEnable(GLenum cap)
     void glLineWidth(GLfloat width)
+    void glLightf(GLenum light, GLenum pname, GLfloat param)
     void glLightfv(GLenum light, GLenum pname, GLfloat *params )
     void glLightModeli(GLenum pname, GLint param)
     void glLoadIdentity()
@@ -36,6 +37,7 @@ cdef extern from "GL/glfw3.h":
     void glOrtho(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar)
     void glPixelStorei(GLenum pname, GLint param)
     void glPolygonMode(GLenum face, GLenum mode)
+    void glPolygonOffset(GLfloat factor, GLfloat units)
     void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels)
     void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
     
@@ -214,6 +216,8 @@ cdef extern from "GL/glfw3.h":
         GL_EMISSION
         GL_POSITION
         GL_SPOT_DIRECTION
+        GL_SPOT_EXPONENT
+        GL_SPOT_CUTOFF
         GL_AMBIENT_AND_DIFFUSE
         GL_COLOR_INDEXES
         GL_LIGHTING

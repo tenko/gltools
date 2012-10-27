@@ -2,7 +2,7 @@
 #
 # This file is part of gltools - See LICENSE.txt
 #
-from geotools cimport Point, Transform
+from geotools cimport Point, Vector, Transform
 
 cdef class ColorRGBA:
     cdef readonly unsigned char red
@@ -27,6 +27,7 @@ cdef class Light:
     cdef public Material material
     cdef public Point position
     cdef public bint directional
+    cdef public Vector direction
     cdef readonly int index
     cpdef enable(self)
     cpdef disable(self)
@@ -150,4 +151,5 @@ cpdef MatrixMode(unsigned int mode)
 cpdef Ortho(double left, double right, double bottom, double top, double zNear, 
             double zFar)
 cpdef PolygonMode(unsigned int face, unsigned int mode)
+cpdef PolygonOffset(float factor, float units)
 cpdef Viewport(int x, int y, int width, int height)

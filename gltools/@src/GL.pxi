@@ -82,11 +82,12 @@ cpdef DrawElements(unsigned int mode, int count, int type, indices):
               integer as a pointer into a already bound ClientBuffer of
               element array type.
     '''
-    cdef size_t offset
-    if isinstance(indices, int):
+    cdef int offset
+    try:
         offset = indices
         glDrawElements(mode, count, type, <void *>offset)
-    else:
+        print
+    except TypeError:
         glDrawElements(mode, count, type, getVoidPtr(indices))
     
 cpdef Enable(unsigned int cap):
@@ -192,6 +193,17 @@ cpdef PolygonMode(unsigned int face, unsigned int mode):
         gl.PolygonMode(gl.FRONT_AND_BACK, gl.FILL)
     '''
     glPolygonMode(face, mode)
+
+cpdef PolygonOffset(float factor, float units):
+    '''
+    Set the scale and units used to calculate depth values
+    
+    :factor: Specifies a scale factor that is used to create a variable depth
+             offset for each polygon.
+    :units: Is multiplied by an implementation-specific value to create a
+            constant depth offset.
+    '''
+    glPolygonOffset(factor, units)
     
 cpdef Viewport(int x, int y, int width, int height):
     '''

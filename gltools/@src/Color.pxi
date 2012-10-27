@@ -148,7 +148,8 @@ cdef class Light:
     Abstraction of OpenGL light
     '''
     def __init__(self, int index = 0, Material material = None,
-                 Point position = None, directional = True):
+                 Point position = None, directional = True,
+                 Vector direction = None):
         if index == 0:
             self.index = GL_LIGHT0
         elif index == 1:
@@ -171,6 +172,7 @@ cdef class Light:
         self.material = material
         self.position = position
         self.directional = directional
+        self.direction = direction
     
     def __str__(self):
         return "Light%s" % repr(self)
@@ -197,14 +199,28 @@ cdef class Light:
         if not self.material.specular is None:
             self.material.specular.setFloatVector(mat)
             glLightfv(self.index, GL_SPECULAR, mat)
+            
+        if self.directional:
+            mat[3] = 0.
+        else:
+            mat[3] = 1.
+        
+        if not self.direction is None:
+            mat[0], mat[1], mat[2] = self.direction
+        else:
+            mat[0], mat[1], mat[2] = 0., 0., -1.
+        
+        glLightfv(self.index, GL_SPOT_DIRECTION, mat)
         
         if not self.position is None:
             mat[0], mat[1], mat[2] = self.position
-            if self.directional:
-                mat[3] = 0.
-            else:
-                mat[3] = 1.
-            glLightfv(self.index, GL_POSITION, mat)
+        else:
+            mat[0], mat[1], mat[2] = 0., 0., 0.
+        
+        glLightfv(self.index, GL_POSITION, mat)
+        
+        glLightf(self.index, GL_SPOT_CUTOFF, 180.)
+        glLightf(self.index, GL_SPOT_EXPONENT, 0.)
         
     cpdef disable(self):
         '''
