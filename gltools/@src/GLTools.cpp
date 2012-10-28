@@ -8,6 +8,38 @@ void setErrorMessage(const char *err) {
     strncpy(errorMessage, err, 255);
 }
 
+int glCheck() {
+    switch(glGetError()) {
+        case GL_NO_ERROR:
+			return 1;
+        
+		case GL_INVALID_ENUM:
+			setErrorMessage("GL_INVALID_ENUM");
+			break;
+        
+        case GL_INVALID_VALUE:
+			setErrorMessage("GL_INVALID_VALUE");
+			break;
+ 
+		case GL_INVALID_OPERATION:
+			setErrorMessage("GL_INVALID_OPERATION");
+			break;
+ 
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			setErrorMessage("GL_INVALID_FRAMEBUFFER_OPERATION");
+			break;
+        
+        case GL_OUT_OF_MEMORY:
+			setErrorMessage("GL_OUT_OF_MEMORY");
+			break;
+ 
+		default:
+			setErrorMessage("GL_UNKNOWN");
+			break;
+    }
+    return 0;
+}
+    
 // load font
 void *_fonts;
 
@@ -176,6 +208,83 @@ int initGLExt(void)
     }
     isGLExtLoaded = 1;
     return 1;
+}
+
+// opengl texture rectangle
+TextureRect2D::TextureRect2D(int width, int height, int depth, void *data = NULL) {
+    GLint iformat, format;
+    
+    m_width = width;
+    m_height = height;
+    m_depth = depth;
+    
+    if (depth == 4) {
+        iformat = GL_RGBA8;
+        format = GL_RGBA;
+    } else {
+        iformat = GL_RGB8;
+        format = GL_RGB;
+    }
+    
+    glGenTextures(1, &m_id);
+    glBindTexture(GL_TEXTURE_RECTANGLE, m_id);
+    
+    
+    glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
+    if (!data) {
+        char *colorBits = new char[width * height * depth];
+        memset(colorBits, 0, width * height * depth);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, format, width, height, 0,
+                     format, GL_UNSIGNED_BYTE, colorBits);
+        delete[] colorBits;
+    } else {
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, format, width, height, 0,
+                     format, GL_UNSIGNED_BYTE, data);
+    }
+    
+    glBindTexture(GL_TEXTURE_RECTANGLE, 0);
+}
+
+TextureRect2D::~TextureRect2D() {
+    glDeleteTextures(1, &m_id);
+}
+
+void TextureRect2D::blit(float x, float y) {
+    glEnable(GL_TEXTURE_RECTANGLE);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_RECTANGLE, m_id);
+    glColor3ub(255,255,255);
+    
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
+    glVertex3f(x, y, 0);
+    glTexCoord2f(m_width, 0);
+    glVertex3f(x + m_width, y, 0);
+    glTexCoord2f(m_width, m_height);
+    glVertex3f(x + m_width, y + m_height, 0);
+    glTexCoord2f(0, m_height);
+    glVertex3f(x, y + m_height, 0);
+    glEnd();
+    
+    glBindTexture(GL_TEXTURE_RECTANGLE, 0);
+    glDisable(GL_TEXTURE_RECTANGLE);
+}
+
+void TextureRect2D::copy(GLenum mode = GL_BACK) {
+    glReadBuffer(mode);
+    glEnable(GL_TEXTURE_RECTANGLE);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_RECTANGLE, m_id);
+    glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE,0,0,0,0,0,m_width, m_height);
+    glBindTexture(GL_TEXTURE_RECTANGLE, 0);
+    glDisable(GL_TEXTURE_RECTANGLE);
 }
 
 // opengl buffer interface

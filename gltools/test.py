@@ -50,177 +50,6 @@ indices = array.array('B',(
     20,21,22,  22,23,20,     # back
 ))
 
-GLSL_VERTEX = \
-"""
-varying vec3 normal;
-varying vec3 vertex;
-
-void main()
-{
-    // Calculate the normal
-    normal = normalize(gl_NormalMatrix * gl_Normal);
-   
-    // Transform the vertex position to eye space
-    vertex = vec3(gl_ModelViewMatrix * gl_Vertex);
-       
-    gl_Position = ftransform();
-}
-"""
-
-GLSL_FRAG = \
-"""
-#define MAX_LIGHTS 3 
-varying vec3 normal;
-varying vec3 vertex;
-
-float calculateAttenuation(in int i, in float dist)
-{
-    return(1.0 / (gl_LightSource[i].constantAttenuation +
-                  gl_LightSource[i].linearAttenuation * dist +
-                  gl_LightSource[i].quadraticAttenuation * dist * dist));
-}
-
-void directionalLight(in int i, in vec3 N, in float shininess,
-                      inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
-{
-    vec3 L = normalize(gl_LightSource[i].position.xyz);
-   
-    float nDotL = dot(N, L);
-   
-    if (nDotL > 0.0)
-    {   
-        vec3 H = gl_LightSource[i].halfVector.xyz;
-       
-        float pf = pow(max(dot(N,H), 0.0), shininess);
-
-        diffuse  += gl_LightSource[i].diffuse  * nDotL;
-        specular += gl_LightSource[i].specular * pf;
-    }
-   
-    ambient  += gl_LightSource[i].ambient;
-}
-
-void pointLight(in int i, in vec3 N, in vec3 V, in float shininess,
-                inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
-{
-    vec3 D = gl_LightSource[i].position.xyz - V;
-    vec3 L = normalize(D);
-
-    float dist = length(D);
-    float attenuation = calculateAttenuation(i, dist);
-
-    float nDotL = dot(N,L);
-
-    if (nDotL > 0.0)
-    {   
-        vec3 E = normalize(-V);
-        vec3 R = reflect(-L, N);
-       
-        float pf = pow(max(dot(R,E), 0.0), shininess);
-
-        diffuse  += gl_LightSource[i].diffuse  * attenuation * nDotL;
-        specular += gl_LightSource[i].specular * attenuation * pf;
-    }
-   
-    ambient  += gl_LightSource[i].ambient * attenuation;
-}
-
-void spotLight(in int i, in vec3 N, in vec3 V, in float shininess,
-               inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
-{
-    vec3 D = gl_LightSource[i].position.xyz - V;
-    vec3 L = normalize(D);
-
-    float dist = length(D);
-    float attenuation = calculateAttenuation(i, dist);
-
-    float nDotL = dot(N,L);
-
-    if (nDotL > 0.0)
-    {   
-        float spotEffect = dot(normalize(gl_LightSource[i].spotDirection), -L);
-       
-        if (spotEffect > gl_LightSource[i].spotCosCutoff)
-        {
-            attenuation *=  pow(spotEffect, gl_LightSource[i].spotExponent);
-
-            vec3 E = normalize(-V);
-            vec3 R = reflect(-L, N);
-       
-            float pf = pow(max(dot(R,E), 0.0), shininess);
-
-            diffuse  += gl_LightSource[i].diffuse  * attenuation * nDotL;
-            specular += gl_LightSource[i].specular * attenuation * pf;
-        }
-    }
-   
-    ambient  += gl_LightSource[i].ambient * attenuation;
-}
-
-void calculateLighting(in vec3 N, in vec3 V, in float shininess,
-                       inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
-{
-    // Just loop through each light, and add
-    // its contributions to the color of the pixel.
-    for (int i = 0; i < MAX_LIGHTS - 1; i++)
-    {
-        if (gl_LightSource[i].position.w == 0.0)
-            directionalLight(i, N, shininess, ambient, diffuse, specular);
-        else if (gl_LightSource[i].spotCutoff == 180.0)
-            pointLight(i, N, V, shininess, ambient, diffuse, specular);
-        else
-             spotLight(i, N, V, shininess, ambient, diffuse, specular);
-    }
-}
-
-void main()
-{
-    // Normalize the normal. A varying variable CANNOT
-    // be modified by a fragment shader. So a new variable
-    // needs to be created.
-    vec3 n = normalize(normal);
-   
-    vec4 ambient, diffuse, specular, color;
-
-    // Initialize the contributions.
-    ambient  = vec4(0.0);
-    diffuse  = vec4(0.0);
-    specular = vec4(0.0);
-   
-    // In this case the built in uniform gl_MaxLights is used
-    // to denote the number of lights. A better option may be passing
-    // in the number of lights as a uniform or replacing the current
-    // value with a smaller value.
-    calculateLighting(n, vertex, gl_FrontMaterial.shininess,
-                      ambient, diffuse, specular);
-   
-    color  = gl_FrontLightModelProduct.sceneColor  +
-             (ambient  * gl_FrontMaterial.ambient) +
-             (diffuse  * gl_FrontMaterial.diffuse) +
-             (specular * gl_FrontMaterial.specular);
-
-    // Re-initialize the contributions for the back
-    // pass over the lights
-    ambient  = vec4(0.0);
-    diffuse  = vec4(0.0);
-    specular = vec4(0.0);
-          
-    // Now caculate the back contribution. All that needs to be
-    // done is to flip the normal.
-    calculateLighting(-n, vertex, gl_BackMaterial.shininess,
-                      ambient, diffuse, specular);
-
-    color += gl_BackLightModelProduct.sceneColor  +
-             (ambient  * gl_BackMaterial.ambient) +
-             (diffuse  * gl_BackMaterial.diffuse) +
-             (specular * gl_BackMaterial.specular);
-
-    color = clamp(color, 0.0, 1.0);
-   
-    gl_FragColor = color;
-}
-"""
-
 class MainWindow(gl.Window):
     def __init__(self, width, height, title):
         self.initialized = False
@@ -280,9 +109,8 @@ class MainWindow(gl.Window):
         )
         
         # GLSL
-        glsl = self.program = gl.ShaderProgram()
-        glsl.build(GLSL_VERTEX, GLSL_FRAG)
-
+        glsl = self.program = gl.ShaderProgram.pongDiffuse(3)
+        
         # mesh
         fsize = vertices.itemsize
         buffer = self.buffer = gl.ClientBuffer()
@@ -433,20 +261,25 @@ class MainWindow(gl.Window):
         cam = self.cam
         
         ui = self.insideUI(x, y)
-            
+        
+        update = False
         if not ui and self.currentButton == gl.MOUSE.LEFT:
             # rotate view
             dx = x - lastx
             dy = y - lasty
             cam.rotateDeltas(dx, dy, target = self.mouseCenter)
+            update = True
         
         elif not ui and self.currentButton == gl.MOUSE.RIGHT:
             # pan view
             cam.pan(lastx, lasty, x, y, target = self.mouseCenter)
-            
+            update = True
+        
         #print 'onCursorPos ', x, y
         self.lastPos = x, y
-        self.onRefresh()
+        
+        if ui or update:
+            self.onRefresh()
         
     def onMouseButton(self, button, action):
         #print 'onMouseButton ', button, action

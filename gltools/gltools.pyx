@@ -18,6 +18,7 @@ include "GL.pxi"
 include "ClientBuffer.pxi"
 include "ShaderProgram.pxi"
 include "Text.pxi"
+include "Texture.pxi"
 include "UI.pxi"
         
 def test2d(double [:, ::1] arr):

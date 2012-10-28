@@ -19,6 +19,7 @@ cdef extern from "GLTools.h":
     ctypedef ssize_t GLsizeiptr
     
     char errorMessage[256]
+    int glCheck()
     
     int stbi_write_png(char *filename, int w, int h, int comp, void *data, int stride_in_bytes)
     
@@ -30,6 +31,14 @@ cdef extern from "GLTools.h":
     int isGLExtLoaded
     int c_initGLExt "initGLExt"()
     
+    cdef cppclass c_TextureRect2D "TextureRect2D":
+        GLuint m_width
+        GLuint m_height
+        GLuint m_depth
+        c_TextureRect2D(int width, int height, int depth, void *data)
+        void blit(float x, float y)
+        void copy(GLenum mode)
+
     cdef cppclass c_ClientBuffer "ClientBuffer":
         c_ClientBuffer(GLenum target)
         void bind()

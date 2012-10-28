@@ -23,6 +23,8 @@ cdef class Material:
     cdef readonly int mode
     cpdef enable(self)
 
+cpdef ambientLight(ColorRGBA col)
+
 cdef class Light:
     cdef public Material material
     cdef public Point position
@@ -31,6 +33,11 @@ cdef class Light:
     cdef readonly int index
     cpdef enable(self)
     cpdef disable(self)
+
+cdef class TextureRect2D:
+    cdef void *thisptr
+    cpdef blit(self, float x = ?, float y = ?)
+    cpdef copy(self, int mode = ?)
     
 cdef class ClientBuffer:
     cdef void *thisptr

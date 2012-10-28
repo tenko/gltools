@@ -14,6 +14,13 @@ cpdef InitGLExt():
     '''
     if not c_initGLExt():
         raise GLError(errorMessage)
+
+cpdef int Check():
+    '''
+    Check for OpenGL errors
+    '''
+    if not glCheck():
+        raise GLError(errorMessage)
         
 cpdef BlendFunc(unsigned int sfactor, unsigned int dfactor):
     '''
@@ -86,7 +93,6 @@ cpdef DrawElements(unsigned int mode, int count, int type, indices):
     try:
         offset = indices
         glDrawElements(mode, count, type, <void *>offset)
-        print
     except TypeError:
         glDrawElements(mode, count, type, getVoidPtr(indices))
     
@@ -95,7 +101,7 @@ cpdef Enable(unsigned int cap):
     Enable server-side GL capabilities
     '''
     glEnable(cap)
-
+    
 cpdef LineWidth(float width):
     '''
     Specify the width of rasterized lines

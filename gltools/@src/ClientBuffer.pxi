@@ -16,6 +16,9 @@ cdef class ClientBuffer:
             raise GLError('OpenGL 2.1 function pointers not found')
         
         self.thisptr = new c_ClientBuffer(target)
+        
+        if not glCheck():
+            raise GLError(errorMessage)
     
     def __dealloc__(self):
         cdef c_ClientBuffer *tmp

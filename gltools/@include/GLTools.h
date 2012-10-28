@@ -16,6 +16,8 @@
 extern char errorMessage[256];
 void setErrorMessage(const char *err);
 
+int glCheck();
+
 // opengl font
 extern void *_fonts;
 int initText(void);
@@ -55,6 +57,18 @@ static PFNGLENABLEVERTEXATTRIBARRAYPROC pglEnableVertexAttribArray = NULL;
 static PFNGLVERTEXATTRIBPOINTERPROC     pglVertexAttribPointer = NULL;
 
 int initGLExt(void);
+
+class TextureRect2D {
+public:
+    GLuint m_id;
+    GLuint m_width;
+    GLuint m_height;
+    GLuint m_depth;
+    TextureRect2D(int width, int height, int depth, void *data);
+    ~TextureRect2D();
+    void blit(float x, float y);
+    void copy(GLenum mode);
+};
 
 struct ClientBufferAttrib {
     int enabled;

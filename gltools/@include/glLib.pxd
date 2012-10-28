@@ -30,6 +30,7 @@ cdef extern from "GL/glfw3.h":
     void glLightf(GLenum light, GLenum pname, GLfloat param)
     void glLightfv(GLenum light, GLenum pname, GLfloat *params )
     void glLightModeli(GLenum pname, GLint param)
+    void glLightModelfv(GLenum pname, GLfloat *params)
     void glLoadIdentity()
     void glLoadMatrixd(GLdouble *m)
     void glMaterialfv(GLenum face, GLenum pname, GLfloat *params)
@@ -245,6 +246,8 @@ cdef extern from "GL/glfw3.h":
         GL_POINT
         GL_LINE
         GL_FILL
+        GL_POLYGON_OFFSET_LINE
+        GL_POLYGON_OFFSET_FILL
         
         # ShadingModel
         GL_FLAT

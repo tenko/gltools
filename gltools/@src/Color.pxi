@@ -143,6 +143,14 @@ cdef class Material:
             mat[0] = fmin(fmax(0., self.shininess), 128)
             glMaterialfv(self.mode, GL_SHININESS, mat)
 
+cpdef ambientLight(ColorRGBA col):
+    '''
+    Set global ambient light color.
+    '''
+    cdef float c_col[4]
+    col.setFloatVector(c_col)
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, c_col)
+    
 cdef class Light:
     '''
     Abstraction of OpenGL light
