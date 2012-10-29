@@ -82,6 +82,15 @@ cdef class ColorRGBA:
         '''
         return self.alpha << 24 | self.blue << 16 | self.green << 8 | self.red
     
+    cpdef fromInt(self, unsigned int value):
+        '''
+        Unpack color from unsigned int
+        '''
+        self.red = value & 0x000000FF
+        self.green = (value & 0x0000FF00) >> 8
+        self.blue = (value & 0x00FF0000) >> 16
+        self.alpha = (value & 0xFF000000) >> 14
+        
     cpdef tuple toFloatVector(self):
         '''
         Return color as float normalized [0.0 - 1.0]

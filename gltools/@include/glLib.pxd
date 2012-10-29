@@ -26,6 +26,8 @@ cdef extern from "GL/glfw3.h":
     void glDrawArrays(GLenum mode, GLint first, GLsizei count)
     void glDrawElements(GLenum mode, GLsizei count, GLenum type, GLvoid *indices)
     void glEnable(GLenum cap)
+    void glGetIntegerv(GLenum pname, GLint *params)
+    void glHint(GLenum target, GLenum mode)
     void glLineWidth(GLfloat width)
     void glLightf(GLenum light, GLenum pname, GLfloat param)
     void glLightfv(GLenum light, GLenum pname, GLfloat *params )
@@ -209,6 +211,16 @@ cdef extern from "GL/glfw3.h":
         GL_STENCIL_BITS
         GL_CULL_FACE
         
+        # Hints
+        GL_PERSPECTIVE_CORRECTION_HINT
+        GL_POINT_SMOOTH_HINT
+        GL_LINE_SMOOTH_HINT
+        GL_POLYGON_SMOOTH_HINT
+        GL_FOG_HINT
+        GL_DONT_CARE
+        GL_FASTEST
+        GL_NICEST
+        
         # Ligthing & Material
         GL_AMBIENT
         GL_DIFFUSE
@@ -257,7 +269,7 @@ cdef extern from "GL/glfw3.h":
         GL_RGB
         GL_RGBA
         GL_PACK_ALIGNMENT
-        
+
         # Texture mapping
         GL_TEXTURE_1D
         GL_TEXTURE_2D

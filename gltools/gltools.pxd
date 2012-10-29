@@ -5,12 +5,13 @@
 from geotools cimport Point, Vector, Transform
 
 cdef class ColorRGBA:
-    cdef readonly unsigned char red
-    cdef readonly unsigned char green
-    cdef readonly unsigned char blue
-    cdef readonly unsigned char alpha
+    cdef public unsigned char red
+    cdef public unsigned char green
+    cdef public unsigned char blue
+    cdef public unsigned char alpha
     cpdef ColorRGBA copy(self, int red = ?, int green = ?, int blue = ?, alpha = ?)
     cpdef unsigned toInt(self)
+    cpdef fromInt(self, unsigned int value)
     cpdef tuple toFloatVector(self)
     cdef setFloatVector(self, float *vec)
 
@@ -141,6 +142,7 @@ cdef class Image:
     cpdef writePNG(self, char *filename, int stride = ?)
     
 cpdef InitGLExt()
+cpdef int Check()
 cpdef BlendFunc(unsigned int sfactor, unsigned int dfactor)
 cpdef Clear(unsigned int mask)
 cpdef ClearColor(ColorRGBA col)
@@ -150,6 +152,7 @@ cpdef Disable(unsigned int cap)
 cpdef DrawArrays(unsigned int mode, int first, int count)
 cpdef DrawElements(unsigned int mode, int count, int type, indices)
 cpdef Enable(unsigned int cap)
+cpdef Hint(int target, int mode)
 cpdef LineWidth(float width)
 cpdef LightModeli(int pname, int param)
 cpdef LoadIdentity()
@@ -159,4 +162,6 @@ cpdef Ortho(double left, double right, double bottom, double top, double zNear,
             double zFar)
 cpdef PolygonMode(unsigned int face, unsigned int mode)
 cpdef PolygonOffset(float factor, float units)
+cpdef ColorRGBA ReadPixel(int x, int y)
+cpdef ReadPixels(int x, int y, Image img)
 cpdef Viewport(int x, int y, int width, int height)

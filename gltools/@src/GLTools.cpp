@@ -105,7 +105,6 @@ int drawText(int idx, float size, float x, float y, const char *text, float *dx)
     }
     if (!sth_draw_text(_fonts, idx, size, x, y, text, dx)) {
         setErrorMessage("failed to draw text string");
-        printf("failed to draw text string\n");
         return 0;
     }
         

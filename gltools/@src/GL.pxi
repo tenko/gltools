@@ -17,7 +17,9 @@ cpdef InitGLExt():
 
 cpdef int Check():
     '''
-    Check for OpenGL errors
+    Check for OpenGL errors.
+    
+    Raises GLError.
     '''
     if not glCheck():
         raise GLError(errorMessage)
@@ -101,7 +103,13 @@ cpdef Enable(unsigned int cap):
     Enable server-side GL capabilities
     '''
     glEnable(cap)
-    
+
+cpdef Hint(int target, int mode):
+    '''
+    specify implementation-specific hints
+    '''
+    glHint(target, mode)
+
 cpdef LineWidth(float width):
     '''
     Specify the width of rasterized lines
@@ -177,20 +185,6 @@ cpdef Ortho(double left, double right, double bottom, double top, double zNear,
     '''
     glOrtho(left, right, bottom, top, zNear, zFar)
 
-cpdef ReadPixels(int x, int y, Image img):
-    '''
-    Read a block of pixels from the frame buffer
-    '''
-    cdef  GLenum format
-    
-    if img.bytesPerPixel == 3:
-        format = GL_RGB
-    else:
-        format = GL_RGBA
-    
-    glPixelStorei(GL_PACK_ALIGNMENT, 1)
-    glReadPixels(x, y, img.width, img.height, format, GL_UNSIGNED_BYTE, img._buffer)
-        
 cpdef PolygonMode(unsigned int face, unsigned int mode):
     '''
     Select a polygon rasterization mode
@@ -210,6 +204,36 @@ cpdef PolygonOffset(float factor, float units):
             constant depth offset.
     '''
     glPolygonOffset(factor, units)
+
+cpdef ColorRGBA ReadPixel(int x, int y):
+    '''
+    Read a sigle pixel from the frame buffer.
+    '''
+    cdef unsigned char pixel[4]
+    cdef ColorRGBA ret = ColorRGBA.__new__(ColorRGBA)
+    
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel)
+    
+    ret.red = pixel[0]
+    ret.green = pixel[1]
+    ret.blue = pixel[2]
+    ret.alpha = pixel[3]
+    return ret
+    
+cpdef ReadPixels(int x, int y, Image img):
+    '''
+    Read a block of pixels from the frame buffer
+    '''
+    cdef  GLenum format
+    
+    if img.bytesPerPixel == 3:
+        format = GL_RGB
+    else:
+        format = GL_RGBA
+    
+    glPixelStorei(GL_PACK_ALIGNMENT, 1)
+    glReadPixels(x, y, img.width, img.height, format, GL_UNSIGNED_BYTE, img._buffer)
+    
     
 cpdef Viewport(int x, int y, int width, int height):
     '''
