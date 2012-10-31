@@ -154,7 +154,11 @@ class MainWindow(gl.Window):
     def insideUI(self, x, y):
         y = self.height - y
         
-        if x >= 10 and x <= 200:
+        if x >= 10 and x <= 210:
+            if y >= self.height - 260 and y <= self.height - 10:
+                return True
+                
+        if x >= 10 and x <= 210:
             if y >= 10 and y <= self.height - 300:
                 return True
         return False
@@ -248,6 +252,14 @@ class MainWindow(gl.Window):
         ui.collapse('Text line', 'Sub text line', False, True)
         
         ui.endScrollArea()
+        
+        ui.beginArea("Fixed Area", 10, h - 260, 200, 250)
+        ui.label('Message')
+        if ui.button("OK", True, 5, 210, 40):
+            print 'Button OK pressed'
+            
+        ui.endArea()
+        
         ui.endFrame()
         ui.flush()
         

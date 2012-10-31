@@ -68,7 +68,24 @@ cdef class UI:
         End scroll area
         '''
         imguiEndScrollArea()
-
+    
+    cpdef bint beginArea(self, name, int x, int y, int w, int h):
+        '''
+        Begin fixed area
+        '''
+        cdef char *c_name
+        
+        bytetext = unicode(name).encode('UTF-8','ignore')
+        c_name = bytetext
+        
+        return imguiBeginArea(c_name, x, y, w, h)
+        
+    cpdef endArea(self):
+        '''
+        End fixed area
+        '''
+        imguiEndArea()
+        
     cpdef indent(self):
         '''
         Indent current x position
@@ -93,7 +110,8 @@ cdef class UI:
         '''
         imguiSeparatorLine()
         
-    cpdef bint button(self, text, bint enabled):
+    cpdef bint button(self, text, bint enabled, int x = -1, int y = -1,
+                      int w = -1, int h = -1):
         '''
         Button element
         '''
@@ -102,7 +120,7 @@ cdef class UI:
         bytetext = unicode(text).encode('UTF-8','ignore')
         c_text = bytetext
     
-        return imguiButton(c_text, enabled)
+        return imguiButton(c_text, enabled, x, y, w, h)
 
     cpdef bint item(self, text, bint enabled):
         '''

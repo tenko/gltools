@@ -45,7 +45,12 @@ void imguiEndFrame();
 bool imguiBeginScrollArea(const char* name, int x, int y, int w, int h, int* scroll);
 void imguiEndScrollArea();
 
-bool imguiButton(const char* text, bool enabled = true);
+bool imguiBeginArea(const char* name, int x, int y, int w, int h);
+void imguiEndArea();
+
+bool imguiButton(const char* text, bool enabled, int x = -1, int y = -1,
+                 int w = -1, int h = -1);
+
 bool imguiItem(const char* text, bool enabled = true);
 bool imguiCheck(const char* text, bool checked, bool enabled = true);
 bool imguiCollapse(const char* text, const char* subtext, bool checked, bool enabled = true);

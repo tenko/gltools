@@ -21,12 +21,15 @@ cdef extern from "imgui.h":
     bint imguiBeginScrollArea(char* name, int x, int y, int w, int h, int* scroll)
     void imguiEndScrollArea()
     
+    bint imguiBeginArea(char* name, int x, int y, int w, int h)
+    void imguiEndArea()
+
     void imguiIndent()
     void imguiUnindent()
     void imguiSeparator()
     void imguiSeparatorLine()
     
-    bint imguiButton(char* text, bint enabled)
+    bint imguiButton(char* text, bint enabled, int x, int y, int w, int h)
     bint imguiItem(char* text, bint enabled)
     bint imguiCheck(char* text, bint checked, bint enabled)
     bint imguiCollapse(char* text, char* subtext, bint checked, bint enabled)
