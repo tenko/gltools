@@ -270,6 +270,11 @@ cdef class Window:
             
             lastX, lastY = x, y
             
+            if not self.error is None:
+                error = self.error
+                self.error = None
+                raise error
+                
             if not self.running:
                 break
                 
@@ -342,24 +347,42 @@ cdef class Window:
 # callback functions
 cdef void cb_onSize(GLFWwindow window, int w, int h):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onSize(w, max(1, h))
+    
+    try:
+        self.onSize(w, max(1, h))
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onRefresh(GLFWwindow window):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    # avoid refresh when request closing
-    self.onRefresh()
-
+    try:
+        self.onRefresh()
+    except Exception as err:
+        self.error = err
+        
 cdef void cb_onCursorPos(GLFWwindow window, int x, int y):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onCursorPos(x, y)
+    
+    try:
+        self.onCursorPos(x, y)
+    except Exception as err:
+        self.error = err
     
 cdef void cb_onMouseButton(GLFWwindow window, int button, int action):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onMouseButton(button, action)
+    
+    try:
+        self.onMouseButton(button, action)
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onKey(GLFWwindow window, int key, int action):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onKey(key, action)
+    
+    try:
+        self.onKey(key, action)
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onChar(GLFWwindow window, int ch):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
@@ -368,11 +391,18 @@ cdef void cb_onChar(GLFWwindow window, int ch):
     st[0] = <char>(ch & 0xff)
     st[1] = 0
     
-    self.onChar(st.decode('UTF-8', 'ignore'))
+    try:
+        self.onChar(st.decode('UTF-8', 'ignore'))
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onFocus(GLFWwindow window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onFocus(status)
+    
+    try:
+        self.onFocus(status)
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onEnter(GLFWwindow window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
@@ -380,16 +410,31 @@ cdef void cb_onEnter(GLFWwindow window, int status):
     
 cdef void cb_onScroll(GLFWwindow window, double dx, double dy):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onScroll(dx, dy)
+    
+    try:
+        self.onScroll(dx, dy)
+    except Exception as err:
+        self.error = err
 
 cdef void cb_onIconify(GLFWwindow window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    self.onIconify(status)
+    
+    try:
+        self.onIconify(status)
+    except Exception as err:
+        self.error = err
     
 cdef int cb_onClose(GLFWwindow window):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
-    cdef int ret = self.onClose()
+    cdef int ret
+    
+    try:
+        ret = self.onClose()
+    except Exception as err:
+        self.error = err
+        
     if ret:
         self.running = False
+    
     return ret
     

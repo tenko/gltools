@@ -59,6 +59,7 @@ cpdef tuple GetDesktopSize()
 cdef class Window:
     cdef void *thisptr
     cdef public bint running
+    cdef object error
     cpdef setTitle(self, title)
     cpdef tuple getSize(self)
     cpdef setSize(self, int width, int height)
