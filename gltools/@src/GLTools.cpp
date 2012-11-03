@@ -1,5 +1,6 @@
 #include "GLTools.h"
 #include "fontstash.h"
+#include <Python.h>
 
 // error handling
 char errorMessage[256];

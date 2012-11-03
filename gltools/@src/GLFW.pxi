@@ -11,8 +11,27 @@ cpdef Init():
     if not glfwInit():
         raise GLError('failed to initialize glfw')
 
+cpdef Terminate():
+    '''
+    Terminate GLFW
+    '''
+    glfwTerminate()
+    
+# event handling
+cpdef PollEvents():
+    '''
+    Process pending events and return
+    '''
+    glfwPollEvents()
+
+cpdef WaitEvents():
+    '''
+    Wait for events
+    '''
+    glfwWaitEvents()
+    
 # timer functions     
-cpdef double getTime():
+cpdef double GetTime():
     '''
     Get current time since call to Init as float value
     '''
@@ -102,6 +121,7 @@ cdef class Window:
         # Set callback functions
         glfwSetWindowSizeCallback(cb_onSize)
         glfwSetWindowRefreshCallback(cb_onRefresh)
+        glfwSetCursorPosCallback(cb_onCursorPos)
         glfwSetMouseButtonCallback(cb_onMouseButton)
         glfwSetKeyCallback(cb_onKey)
         glfwSetCharCallback(cb_onChar)
@@ -228,6 +248,7 @@ cdef class Window:
         cdef int x, y, lastX, lastY
         cdef double t
         
+        glfwSetCursorPosCallback(NULL)
         glfwGetCursorPos(<GLFWwindow>self.thisptr, &lastX, &lastY)
         self.running = True
         while True:
@@ -328,6 +349,10 @@ cdef void cb_onRefresh(GLFWwindow window):
     # avoid refresh when request closing
     self.onRefresh()
 
+cdef void cb_onCursorPos(GLFWwindow window, int x, int y):
+    cdef Window self = <Window>glfwGetWindowUserPointer(window)
+    self.onCursorPos(x, y)
+    
 cdef void cb_onMouseButton(GLFWwindow window, int button, int action):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     self.onMouseButton(button, action)

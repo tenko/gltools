@@ -50,7 +50,8 @@ cdef class ClientBuffer:
     cpdef loadData(self, data, ssize_t size, ssize_t offset = ?, int usage = ?)
 
 cpdef Init()
-cpdef double getTime()
+cpdef Terminate()
+cpdef double GetTime()
 cpdef SetTime(double time)
 cpdef SetGamma(float gamma)
 cpdef tuple GetDesktopSize()

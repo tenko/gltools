@@ -16,6 +16,7 @@
 extern char errorMessage[256];
 void setErrorMessage(const char *err);
 
+// opengl error check
 int glCheck();
 
 // opengl font
