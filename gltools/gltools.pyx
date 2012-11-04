@@ -20,20 +20,3 @@ include "ShaderProgram.pxi"
 include "Text.pxi"
 include "Texture.pxi"
 include "UI.pxi"
-        
-def test2d(double [:, ::1] arr):
-    for row in range(4):
-        for col in range(4):
-            print row, col, arr[row][col]
-        print
-    print
-
-def test1d(double [:] vec):
-    for col in range(4):
-        print col, vec[col]
-    print
-
-def test1f(float [:] vec):
-    for col in range(4):
-        print col, vec[col]
-    print

@@ -24,7 +24,7 @@ cdef class Material:
     cdef readonly int mode
     cpdef enable(self)
 
-cpdef ambientLight(ColorRGBA col)
+cpdef AmbientLight(ColorRGBA col)
 
 cdef class Light:
     cdef public Material material

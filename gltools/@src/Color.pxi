@@ -152,7 +152,7 @@ cdef class Material:
             mat[0] = fmin(fmax(0., self.shininess), 128)
             glMaterialfv(self.mode, GL_SHININESS, mat)
 
-cpdef ambientLight(ColorRGBA col):
+cpdef AmbientLight(ColorRGBA col):
     '''
     Set global ambient light color.
     '''
