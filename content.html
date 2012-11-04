@@ -69,6 +69,12 @@ bytes.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gltools.ColorRGBA.fromInt">
+<tt class="descname">fromInt</tt><big>(</big><em>self</em>, <em>unsigned int value</em><big>)</big><a class="headerlink" href="#gltools.ColorRGBA.fromInt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unpack color from unsigned int</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="gltools.ColorRGBA.toFloatVector">
 <tt class="descname">toFloatVector</tt><big>(</big><em>self</em><big>)</big> &rarr; tuple<a class="headerlink" href="#gltools.ColorRGBA.toFloatVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return color as float normalized [0.0 - 1.0]</p>
@@ -229,7 +235,7 @@ bytes.</p>
 <dl class="class">
 <dt id="gltools.Light">
 <em class="property">class </em><tt class="descclassname">gltools.</tt><tt class="descname">Light</tt><a class="headerlink" href="#gltools.Light" title="Permalink to this definition">¶</a></dt>
-<dd><p>Light(int index=0, Material material=None, Point position=None, directional=True)</p>
+<dd><p>Light(int index=0, Material material=None, Point position=None, directional=True, Vector direction=None)</p>
 <p>Abstraction of OpenGL light</p>
 <dl class="staticmethod">
 <dt id="gltools.Light.__new__">
@@ -267,6 +273,12 @@ bytes.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="gltools.Light.direction">
+<tt class="descname">direction</tt><a class="headerlink" href="#gltools.Light.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>direction: geotools.Vector</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="gltools.Light.directional">
 <tt class="descname">directional</tt><a class="headerlink" href="#gltools.Light.directional" title="Permalink to this definition">¶</a></dt>
 <dd><p>directional: &#8216;int&#8217;</p>
@@ -288,6 +300,140 @@ bytes.</p>
 <dt id="gltools.Light.position">
 <tt class="descname">position</tt><a class="headerlink" href="#gltools.Light.position" title="Permalink to this definition">¶</a></dt>
 <dd><p>position: geotools.Point</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="image">
+<h2>Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gltools.Image">
+<em class="property">class </em><tt class="descclassname">gltools.</tt><tt class="descname">Image</tt><a class="headerlink" href="#gltools.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image(int width, int height, int format)</p>
+<p>Image buffer containing either an RGB/RGBA 8bit
+channel image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Width :</th><td class="field-body">image width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Height :</th><td class="field-body">image height</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Format :</th><td class="field-body">gl.RGB or gl.RGBA</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="gltools.Image.__new__">
+<em class="property">static </em><tt class="descname">__new__</tt><big>(</big><em>S</em>, <em>...</em><big>)</big> &rarr; a new object with type S, a subtype of T<a class="headerlink" href="#gltools.Image.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gltools.Image.flipY">
+<tt class="descname">flipY</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#gltools.Image.flipY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flip inplace the image in the vertical direction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gltools.Image.writePNG">
+<tt class="descname">writePNG</tt><big>(</big><em>self</em>, <em>char *filename</em>, <em>int stride=0</em><big>)</big><a class="headerlink" href="#gltools.Image.writePNG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write image to PNG file. Note that the file
+will be overwritten if not locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Filename :</th><td class="field-body">image file name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Stride :</th><td class="field-body">stride into buffer</td>
+</tr>
+</tbody>
+</table>
+<p>Raises GLError on failure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.Image.__init__">
+<tt class="descname">__init__</tt><a class="headerlink" href="#gltools.Image.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.Image.__len__">
+<tt class="descname">__len__</tt><a class="headerlink" href="#gltools.Image.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__len__() &lt;==&gt; len(x)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.Image.bytesPerPixel">
+<tt class="descname">bytesPerPixel</tt><a class="headerlink" href="#gltools.Image.bytesPerPixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>bytesPerPixel: &#8216;int&#8217;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.Image.height">
+<tt class="descname">height</tt><a class="headerlink" href="#gltools.Image.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>height: &#8216;int&#8217;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.Image.width">
+<tt class="descname">width</tt><a class="headerlink" href="#gltools.Image.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>width: &#8216;int&#8217;</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="texturerect2d">
+<h2>TextureRect2D<a class="headerlink" href="#texturerect2d" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gltools.TextureRect2D">
+<em class="property">class </em><tt class="descclassname">gltools.</tt><tt class="descname">TextureRect2D</tt><a class="headerlink" href="#gltools.TextureRect2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>TextureRect2D(int width, int height, int depth=3)</p>
+<p>Abstraction of OpenGL 2d rectangular texture used
+for keeping a buffer of the screen content.</p>
+<dl class="staticmethod">
+<dt id="gltools.TextureRect2D.__new__">
+<em class="property">static </em><tt class="descname">__new__</tt><big>(</big><em>S</em>, <em>...</em><big>)</big> &rarr; a new object with type S, a subtype of T<a class="headerlink" href="#gltools.TextureRect2D.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gltools.TextureRect2D.blit">
+<tt class="descname">blit</tt><big>(</big><em>self</em>, <em>float x=0.0</em>, <em>float y=0.0</em><big>)</big><a class="headerlink" href="#gltools.TextureRect2D.blit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blit content of the texture to the back buffer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gltools.TextureRect2D.copy">
+<tt class="descname">copy</tt><big>(</big><em>self</em>, <em>int mode=GL_BACK</em><big>)</big><a class="headerlink" href="#gltools.TextureRect2D.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy buffer content to texture.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gltools.TextureRect2D.fromImage">
+<em class="property">static </em><tt class="descname">fromImage</tt><big>(</big><em>type cls</em>, <em>Image img</em><big>)</big><a class="headerlink" href="#gltools.TextureRect2D.fromImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create texture from existing image</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.TextureRect2D.__init__">
+<tt class="descname">__init__</tt><a class="headerlink" href="#gltools.TextureRect2D.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.TextureRect2D.__repr__">
+<tt class="descname">__repr__</tt><a class="headerlink" href="#gltools.TextureRect2D.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__repr__() &lt;==&gt; repr(x)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gltools.TextureRect2D.__str__">
+<tt class="descname">__str__</tt><a class="headerlink" href="#gltools.TextureRect2D.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__str__() &lt;==&gt; str(x)</p>
 </dd></dl>
 
 </dd></dl>
@@ -421,6 +567,11 @@ loaded.</p>
 <dd><p>Unset program. This will enable the fixed openGL pipeline</p>
 </dd></dl>
 
+<dl class="staticmethod">
+<dt id="gltools.ShaderProgram.flat">
+<em class="property">static </em><tt class="descname">flat</tt><big>(</big><em>type cls</em><big>)</big><a class="headerlink" href="#gltools.ShaderProgram.flat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="gltools.ShaderProgram.isValid">
 <tt class="descname">isValid</tt><big>(</big><em>self</em><big>)</big> &rarr; int<a class="headerlink" href="#gltools.ShaderProgram.isValid" title="Permalink to this definition">¶</a></dt>
@@ -451,6 +602,16 @@ loaded.</p>
 <dd><p>Load named uniform matrix value</p>
 </dd></dl>
 
+<dl class="staticmethod">
+<dt id="gltools.ShaderProgram.pongDiffuse">
+<em class="property">static </em><tt class="descname">pongDiffuse</tt><big>(</big><em>type cls</em>, <em>int lights</em><big>)</big><a class="headerlink" href="#gltools.ShaderProgram.pongDiffuse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gltools.ShaderProgram.pongSpecular">
+<em class="property">static </em><tt class="descname">pongSpecular</tt><big>(</big><em>type cls</em>, <em>int lights</em><big>)</big><a class="headerlink" href="#gltools.ShaderProgram.pongSpecular" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="gltools.ShaderProgram.__init__">
 <tt class="descname">__init__</tt><a class="headerlink" href="#gltools.ShaderProgram.__init__" title="Permalink to this definition">¶</a></dt>
@@ -471,6 +632,9 @@ loaded.</p>
 
 </dd></dl>
 
+</div>
+<div class="section" id="glfw">
+<h2>GLFW<a class="headerlink" href="#glfw" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="gltools.Init">
 <tt class="descclassname">gltools.</tt><tt class="descname">Init</tt><big>(</big><big>)</big><a class="headerlink" href="#gltools.Init" title="Permalink to this definition">¶</a></dt>
@@ -479,8 +643,14 @@ loaded.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gltools.getTime">
-<tt class="descclassname">gltools.</tt><tt class="descname">getTime</tt><big>(</big><big>)</big> &rarr; double<a class="headerlink" href="#gltools.getTime" title="Permalink to this definition">¶</a></dt>
+<dt id="gltools.Terminate">
+<tt class="descclassname">gltools.</tt><tt class="descname">Terminate</tt><big>(</big><big>)</big><a class="headerlink" href="#gltools.Terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate GLFW</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.GetTime">
+<tt class="descclassname">gltools.</tt><tt class="descname">GetTime</tt><big>(</big><big>)</big> &rarr; double<a class="headerlink" href="#gltools.GetTime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get current time since call to Init as float value</p>
 </dd></dl>
 
@@ -709,6 +879,12 @@ handled to avoid to quick update.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gltools.UI.beginArea">
+<tt class="descname">beginArea</tt><big>(</big><em>self</em>, <em>name</em>, <em>int x</em>, <em>int y</em>, <em>int w</em>, <em>int h</em><big>)</big> &rarr; int<a class="headerlink" href="#gltools.UI.beginArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begin fixed area</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="gltools.UI.beginFrame">
 <tt class="descname">beginFrame</tt><big>(</big><em>self</em>, <em>int mx</em>, <em>int my</em>, <em>char mbut</em>, <em>int scroll</em><big>)</big><a class="headerlink" href="#gltools.UI.beginFrame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start frame</p>
@@ -723,7 +899,7 @@ handled to avoid to quick update.</p>
 
 <dl class="method">
 <dt id="gltools.UI.button">
-<tt class="descname">button</tt><big>(</big><em>self</em>, <em>text</em>, <em>int enabled</em><big>)</big> &rarr; int<a class="headerlink" href="#gltools.UI.button" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">button</tt><big>(</big><em>self</em>, <em>text</em>, <em>int enabled</em>, <em>int x=-1</em>, <em>int y=-1</em>, <em>int w=-1</em>, <em>int h=-1</em><big>)</big> &rarr; int<a class="headerlink" href="#gltools.UI.button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Button element</p>
 </dd></dl>
 
@@ -761,6 +937,12 @@ handled to avoid to quick update.</p>
 <dt id="gltools.UI.drawText">
 <tt class="descname">drawText</tt><big>(</big><em>self</em>, <em>int x</em>, <em>int y</em>, <em>int align</em>, <em>text</em>, <em>ColorRGBA color</em><big>)</big><a class="headerlink" href="#gltools.UI.drawText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gltools.UI.endArea">
+<tt class="descname">endArea</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#gltools.UI.endArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>End fixed area</p>
 </dd></dl>
 
 <dl class="method">
@@ -838,13 +1020,247 @@ handled to avoid to quick update.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="glfw-constants">
+<h2>GLFW Constants<a class="headerlink" href="#glfw-constants" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="action">
+<h3>ACTION<a class="headerlink" href="#action" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.ACTION.PRESS">
+<tt class="descclassname">gltools.ACTION.</tt><tt class="descname">PRESS</tt><a class="headerlink" href="#gltools.ACTION.PRESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ACTION.RELEASE">
+<tt class="descclassname">gltools.ACTION.</tt><tt class="descname">RELEASE</tt><a class="headerlink" href="#gltools.ACTION.RELEASE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="mouse">
+<h3>MOUSE<a class="headerlink" href="#mouse" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.MOUSE.LEFT">
+<tt class="descclassname">gltools.MOUSE.</tt><tt class="descname">LEFT</tt><a class="headerlink" href="#gltools.MOUSE.LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.MOUSE.RIGHT">
+<tt class="descclassname">gltools.MOUSE.</tt><tt class="descname">RIGHT</tt><a class="headerlink" href="#gltools.MOUSE.RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.MOUSE.MIDDLE">
+<tt class="descclassname">gltools.MOUSE.</tt><tt class="descname">MIDDLE</tt><a class="headerlink" href="#gltools.MOUSE.MIDDLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="key">
+<h3>KEY<a class="headerlink" href="#key" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.KEY.SPACE">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">SPACE</tt><a class="headerlink" href="#gltools.KEY.SPACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.ESCAPE">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">ESCAPE</tt><a class="headerlink" href="#gltools.KEY.ESCAPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.ENTER">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">ENTER</tt><a class="headerlink" href="#gltools.KEY.ENTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.TAB">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">TAB</tt><a class="headerlink" href="#gltools.KEY.TAB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.BACKSPACE">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">BACKSPACE</tt><a class="headerlink" href="#gltools.KEY.BACKSPACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.INSERT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">INSERT</tt><a class="headerlink" href="#gltools.KEY.INSERT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.DELETE">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">DELETE</tt><a class="headerlink" href="#gltools.KEY.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.RIGHT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">RIGHT</tt><a class="headerlink" href="#gltools.KEY.RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.LEFT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">LEFT</tt><a class="headerlink" href="#gltools.KEY.LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.DOWN">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">DOWN</tt><a class="headerlink" href="#gltools.KEY.DOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.UP">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">UP</tt><a class="headerlink" href="#gltools.KEY.UP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.PAGE_UP">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">PAGE_UP</tt><a class="headerlink" href="#gltools.KEY.PAGE_UP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.PAGE_DOWN">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">PAGE_DOWN</tt><a class="headerlink" href="#gltools.KEY.PAGE_DOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.HOME">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">HOME</tt><a class="headerlink" href="#gltools.KEY.HOME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.END">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">END</tt><a class="headerlink" href="#gltools.KEY.END" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.CAPS_LOCK">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">CAPS_LOCK</tt><a class="headerlink" href="#gltools.KEY.CAPS_LOCK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.SCROLL_LOCK">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">SCROLL_LOCK</tt><a class="headerlink" href="#gltools.KEY.SCROLL_LOCK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.NUM_LOCK">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">NUM_LOCK</tt><a class="headerlink" href="#gltools.KEY.NUM_LOCK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.PRINT_SCREEN">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">PRINT_SCREEN</tt><a class="headerlink" href="#gltools.KEY.PRINT_SCREEN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.PAUSE">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">PAUSE</tt><a class="headerlink" href="#gltools.KEY.PAUSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F1">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F1</tt><a class="headerlink" href="#gltools.KEY.F1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F2">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F2</tt><a class="headerlink" href="#gltools.KEY.F2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F3">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F3</tt><a class="headerlink" href="#gltools.KEY.F3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F4">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F4</tt><a class="headerlink" href="#gltools.KEY.F4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F5">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F5</tt><a class="headerlink" href="#gltools.KEY.F5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F6">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F6</tt><a class="headerlink" href="#gltools.KEY.F6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F7">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F7</tt><a class="headerlink" href="#gltools.KEY.F7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F8">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F8</tt><a class="headerlink" href="#gltools.KEY.F8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F9">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F9</tt><a class="headerlink" href="#gltools.KEY.F9" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F10">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F10</tt><a class="headerlink" href="#gltools.KEY.F10" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F11">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F11</tt><a class="headerlink" href="#gltools.KEY.F11" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.F12">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">F12</tt><a class="headerlink" href="#gltools.KEY.F12" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.LEFT_SHIFT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">LEFT_SHIFT</tt><a class="headerlink" href="#gltools.KEY.LEFT_SHIFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.LEFT_CONTROL">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">LEFT_CONTROL</tt><a class="headerlink" href="#gltools.KEY.LEFT_CONTROL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.LEFT_ALT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">LEFT_ALT</tt><a class="headerlink" href="#gltools.KEY.LEFT_ALT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.RIGHT_SHIFT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">RIGHT_SHIFT</tt><a class="headerlink" href="#gltools.KEY.RIGHT_SHIFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.RIGHT_CONTROL">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">RIGHT_CONTROL</tt><a class="headerlink" href="#gltools.KEY.RIGHT_CONTROL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.KEY.RIGHT_ALT">
+<tt class="descclassname">gltools.KEY.</tt><tt class="descname">RIGHT_ALT</tt><a class="headerlink" href="#gltools.KEY.RIGHT_ALT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
 <div class="section" id="opengl">
-<h2>openGL<a class="headerlink" href="#opengl" title="Permalink to this headline">¶</a></h2>
+<h2>OpenGL<a class="headerlink" href="#opengl" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="gltools.InitGLExt">
 <tt class="descclassname">gltools.</tt><tt class="descname">InitGLExt</tt><big>(</big><big>)</big><a class="headerlink" href="#gltools.InitGLExt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize OpenGL 2.1 extension</p>
 <p>Raise GLError if extensions not found</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.Check">
+<tt class="descclassname">gltools.</tt><tt class="descname">Check</tt><big>(</big><big>)</big> &rarr; int<a class="headerlink" href="#gltools.Check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for OpenGL errors.</p>
+<p>Raises GLError.</p>
 </dd></dl>
 
 <dl class="function">
@@ -878,6 +1294,12 @@ handled to avoid to quick update.</p>
 <tt class="descclassname">gltools.</tt><tt class="descname">EndText</tt><big>(</big><big>)</big><a class="headerlink" href="#gltools.EndText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finish text drawing. This will flush any pending text
 drawing operations.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.AmbientLight">
+<tt class="descclassname">gltools.</tt><tt class="descname">AmbientLight</tt><big>(</big><em>ColorRGBA col</em><big>)</big><a class="headerlink" href="#gltools.AmbientLight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global ambient light color.</p>
 </dd></dl>
 
 <dl class="function">
@@ -979,6 +1401,12 @@ element array type.</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="gltools.Hint">
+<tt class="descclassname">gltools.</tt><tt class="descname">Hint</tt><big>(</big><em>int target</em>, <em>int mode</em><big>)</big><a class="headerlink" href="#gltools.Hint" title="Permalink to this definition">¶</a></dt>
+<dd><p>specify implementation-specific hints</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="gltools.Enable">
 <tt class="descclassname">gltools.</tt><tt class="descname">Enable</tt><big>(</big><em>unsigned int cap</em><big>)</big><a class="headerlink" href="#gltools.Enable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable server-side GL capabilities</p>
@@ -1006,6 +1434,780 @@ element array type.</td>
 <dd><p>Replace the current matrix with the identity matrix</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="gltools.LoadMatrixd">
+<tt class="descclassname">gltools.</tt><tt class="descname">LoadMatrixd</tt><big>(</big><em>Transform tr</em><big>)</big><a class="headerlink" href="#gltools.LoadMatrixd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the current matrix with given matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.MatrixMode">
+<tt class="descclassname">gltools.</tt><tt class="descname">MatrixMode</tt><big>(</big><em>unsigned int mode</em><big>)</big><a class="headerlink" href="#gltools.MatrixMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify which matrix is the current matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Mode :</th><td class="field-body">gl.MODELVIEW, gl.PROJECTION, or gl.TEXTURE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.Ortho">
+<tt class="descclassname">gltools.</tt><tt class="descname">Ortho</tt><big>(</big><em>double left</em>, <em>double right</em>, <em>double bottom</em>, <em>double top</em>, <em>double zNear</em>, <em>double zFar</em><big>)</big><a class="headerlink" href="#gltools.Ortho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply the current matrix with an orthographic matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Left :</th><td class="field-body">Specify the coordinates for the left vertical clipping plane.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Right :</th><td class="field-body">Specify the coordinates for the vertical clipping plane.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Bottom :</th><td class="field-body">Specify the coordinates for the bottom horizontal clipping plane.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Top :</th><td class="field-body">Specify the coordinates for the top horizontal clipping plane.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Znear :</th><td class="field-body">Specify the distances to the nearer clipping plane.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Zfar :</th><td class="field-body">Specify the distances to the farther depth clipping plane.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.PolygonMode">
+<tt class="descclassname">gltools.</tt><tt class="descname">PolygonMode</tt><big>(</big><em>unsigned int face</em>, <em>unsigned int mode</em><big>)</big><a class="headerlink" href="#gltools.PolygonMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select a polygon rasterization mode</p>
+<dl class="docutils">
+<dt>Example::</dt>
+<dd>gl.PolygonMode(gl.FRONT_AND_BACK, gl.FILL)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.PolygonOffset">
+<tt class="descclassname">gltools.</tt><tt class="descname">PolygonOffset</tt><big>(</big><em>float factor</em>, <em>float units</em><big>)</big><a class="headerlink" href="#gltools.PolygonOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the scale and units used to calculate depth values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Factor :</th><td class="field-body">Specifies a scale factor that is used to create a variable depth
+offset for each polygon.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Units :</th><td class="field-body">Is multiplied by an implementation-specific value to create a
+constant depth offset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.ReadPixel">
+<tt class="descclassname">gltools.</tt><tt class="descname">ReadPixel</tt><big>(</big><em>int x</em>, <em>int y</em><big>)</big> &rarr; ColorRGBA<a class="headerlink" href="#gltools.ReadPixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a sigle pixel from the frame buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.ReadPixels">
+<tt class="descclassname">gltools.</tt><tt class="descname">ReadPixels</tt><big>(</big><em>int x</em>, <em>int y</em>, <em>Image img</em><big>)</big><a class="headerlink" href="#gltools.ReadPixels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a block of pixels from the frame buffer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gltools.Viewport">
+<tt class="descclassname">gltools.</tt><tt class="descname">Viewport</tt><big>(</big><em>int x</em>, <em>int y</em>, <em>int width</em>, <em>int height</em><big>)</big><a class="headerlink" href="#gltools.Viewport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the viewport</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X :</th><td class="field-body">x coordiante of lower left corner.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y :</th><td class="field-body">y coordiante of lower left corner.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Width :</th><td class="field-body">viewport width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Height :</th><td class="field-body">viewport height</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="opengl-constants">
+<h2>OpenGL Constants<a class="headerlink" href="#opengl-constants" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="alphafunction">
+<h3>AlphaFunction<a class="headerlink" href="#alphafunction" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.NEVER">
+<tt class="descclassname">gltools.</tt><tt class="descname">NEVER</tt><a class="headerlink" href="#gltools.NEVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LESS">
+<tt class="descclassname">gltools.</tt><tt class="descname">LESS</tt><a class="headerlink" href="#gltools.LESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.EQUAL">
+<tt class="descclassname">gltools.</tt><tt class="descname">EQUAL</tt><a class="headerlink" href="#gltools.EQUAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LEQUAL">
+<tt class="descclassname">gltools.</tt><tt class="descname">LEQUAL</tt><a class="headerlink" href="#gltools.LEQUAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.GREATER">
+<tt class="descclassname">gltools.</tt><tt class="descname">GREATER</tt><a class="headerlink" href="#gltools.GREATER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.NOTEQUAL">
+<tt class="descclassname">gltools.</tt><tt class="descname">NOTEQUAL</tt><a class="headerlink" href="#gltools.NOTEQUAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.GEQUAL">
+<tt class="descclassname">gltools.</tt><tt class="descname">GEQUAL</tt><a class="headerlink" href="#gltools.GEQUAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ALWAYS">
+<tt class="descclassname">gltools.</tt><tt class="descname">ALWAYS</tt><a class="headerlink" href="#gltools.ALWAYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="attribmask">
+<h3>AttribMask<a class="headerlink" href="#attribmask" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.CURRENT_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">CURRENT_BIT</tt><a class="headerlink" href="#gltools.CURRENT_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POINT_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POINT_BIT</tt><a class="headerlink" href="#gltools.POINT_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINE_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE_BIT</tt><a class="headerlink" href="#gltools.LINE_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON_BIT</tt><a class="headerlink" href="#gltools.POLYGON_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON_STIPPLE_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON_STIPPLE_BIT</tt><a class="headerlink" href="#gltools.POLYGON_STIPPLE_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.PIXEL_MODE_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">PIXEL_MODE_BIT</tt><a class="headerlink" href="#gltools.PIXEL_MODE_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHTING_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHTING_BIT</tt><a class="headerlink" href="#gltools.LIGHTING_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FOG_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FOG_BIT</tt><a class="headerlink" href="#gltools.FOG_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.DEPTH_BUFFER_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">DEPTH_BUFFER_BIT</tt><a class="headerlink" href="#gltools.DEPTH_BUFFER_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ACCUM_BUFFER_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">ACCUM_BUFFER_BIT</tt><a class="headerlink" href="#gltools.ACCUM_BUFFER_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.STENCIL_BUFFER_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">STENCIL_BUFFER_BIT</tt><a class="headerlink" href="#gltools.STENCIL_BUFFER_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.VIEWPORT_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">VIEWPORT_BIT</tt><a class="headerlink" href="#gltools.VIEWPORT_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TRANSFORM_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">TRANSFORM_BIT</tt><a class="headerlink" href="#gltools.TRANSFORM_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ENABLE_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">ENABLE_BIT</tt><a class="headerlink" href="#gltools.ENABLE_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.COLOR_BUFFER_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">COLOR_BUFFER_BIT</tt><a class="headerlink" href="#gltools.COLOR_BUFFER_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.HINT_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">HINT_BIT</tt><a class="headerlink" href="#gltools.HINT_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.EVAL_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">EVAL_BIT</tt><a class="headerlink" href="#gltools.EVAL_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIST_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIST_BIT</tt><a class="headerlink" href="#gltools.LIST_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TEXTURE_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">TEXTURE_BIT</tt><a class="headerlink" href="#gltools.TEXTURE_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SCISSOR_BIT">
+<tt class="descclassname">gltools.</tt><tt class="descname">SCISSOR_BIT</tt><a class="headerlink" href="#gltools.SCISSOR_BIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ALL_ATTRIB_BITS">
+<tt class="descclassname">gltools.</tt><tt class="descname">ALL_ATTRIB_BITS</tt><a class="headerlink" href="#gltools.ALL_ATTRIB_BITS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beginmode">
+<h3>BeginMode<a class="headerlink" href="#beginmode" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.POINTS">
+<tt class="descclassname">gltools.</tt><tt class="descname">POINTS</tt><a class="headerlink" href="#gltools.POINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINES">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINES</tt><a class="headerlink" href="#gltools.LINES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINE_LOOP">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE_LOOP</tt><a class="headerlink" href="#gltools.LINE_LOOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINE_STRIP">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE_STRIP</tt><a class="headerlink" href="#gltools.LINE_STRIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TRIANGLES">
+<tt class="descclassname">gltools.</tt><tt class="descname">TRIANGLES</tt><a class="headerlink" href="#gltools.TRIANGLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TRIANGLE_STRIP">
+<tt class="descclassname">gltools.</tt><tt class="descname">TRIANGLE_STRIP</tt><a class="headerlink" href="#gltools.TRIANGLE_STRIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TRIANGLE_FAN">
+<tt class="descclassname">gltools.</tt><tt class="descname">TRIANGLE_FAN</tt><a class="headerlink" href="#gltools.TRIANGLE_FAN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.QUADS">
+<tt class="descclassname">gltools.</tt><tt class="descname">QUADS</tt><a class="headerlink" href="#gltools.QUADS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.QUAD_STRIP">
+<tt class="descclassname">gltools.</tt><tt class="descname">QUAD_STRIP</tt><a class="headerlink" href="#gltools.QUAD_STRIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON</tt><a class="headerlink" href="#gltools.POLYGON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="vertex-arrays">
+<h3>Vertex Arrays<a class="headerlink" href="#vertex-arrays" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.VERTEX_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">VERTEX_ARRAY</tt><a class="headerlink" href="#gltools.VERTEX_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.NORMAL_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">NORMAL_ARRAY</tt><a class="headerlink" href="#gltools.NORMAL_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.COLOR_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">COLOR_ARRAY</tt><a class="headerlink" href="#gltools.COLOR_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.INDEX_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">INDEX_ARRAY</tt><a class="headerlink" href="#gltools.INDEX_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TEXTURE_COORD_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">TEXTURE_COORD_ARRAY</tt><a class="headerlink" href="#gltools.TEXTURE_COORD_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.EDGE_FLAG_ARRAY">
+<tt class="descclassname">gltools.</tt><tt class="descname">EDGE_FLAG_ARRAY</tt><a class="headerlink" href="#gltools.EDGE_FLAG_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="blendingfactordest">
+<h3>BlendingFactorDest<a class="headerlink" href="#blendingfactordest" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.ZERO">
+<tt class="descclassname">gltools.</tt><tt class="descname">ZERO</tt><a class="headerlink" href="#gltools.ZERO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ONE">
+<tt class="descclassname">gltools.</tt><tt class="descname">ONE</tt><a class="headerlink" href="#gltools.ONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SRC_COLOR">
+<tt class="descclassname">gltools.</tt><tt class="descname">SRC_COLOR</tt><a class="headerlink" href="#gltools.SRC_COLOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ONE_MINUS_SRC_COLOR">
+<tt class="descclassname">gltools.</tt><tt class="descname">ONE_MINUS_SRC_COLOR</tt><a class="headerlink" href="#gltools.ONE_MINUS_SRC_COLOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SRC_ALPHA">
+<tt class="descclassname">gltools.</tt><tt class="descname">SRC_ALPHA</tt><a class="headerlink" href="#gltools.SRC_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ONE_MINUS_SRC_ALPHA">
+<tt class="descclassname">gltools.</tt><tt class="descname">ONE_MINUS_SRC_ALPHA</tt><a class="headerlink" href="#gltools.ONE_MINUS_SRC_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.DST_ALPHA">
+<tt class="descclassname">gltools.</tt><tt class="descname">DST_ALPHA</tt><a class="headerlink" href="#gltools.DST_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ONE_MINUS_DST_ALPHA">
+<tt class="descclassname">gltools.</tt><tt class="descname">ONE_MINUS_DST_ALPHA</tt><a class="headerlink" href="#gltools.ONE_MINUS_DST_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="blendingfactorsrc">
+<h3>BlendingFactorSrc<a class="headerlink" href="#blendingfactorsrc" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.DST_COLOR">
+<tt class="descclassname">gltools.</tt><tt class="descname">DST_COLOR</tt><a class="headerlink" href="#gltools.DST_COLOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ONE_MINUS_DST_COLOR">
+<tt class="descclassname">gltools.</tt><tt class="descname">ONE_MINUS_DST_COLOR</tt><a class="headerlink" href="#gltools.ONE_MINUS_DST_COLOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SRC_ALPHA_SATURATE">
+<tt class="descclassname">gltools.</tt><tt class="descname">SRC_ALPHA_SATURATE</tt><a class="headerlink" href="#gltools.SRC_ALPHA_SATURATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="boolean-values">
+<h3>Boolean values<a class="headerlink" href="#boolean-values" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.FALSE">
+<tt class="descclassname">gltools.</tt><tt class="descname">FALSE</tt><a class="headerlink" href="#gltools.FALSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TRUE">
+<tt class="descclassname">gltools.</tt><tt class="descname">TRUE</tt><a class="headerlink" href="#gltools.TRUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="datatypes">
+<h3>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.BYTE">
+<tt class="descclassname">gltools.</tt><tt class="descname">BYTE</tt><a class="headerlink" href="#gltools.BYTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.UNSIGNED_BYTE">
+<tt class="descclassname">gltools.</tt><tt class="descname">UNSIGNED_BYTE</tt><a class="headerlink" href="#gltools.UNSIGNED_BYTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SHORT">
+<tt class="descclassname">gltools.</tt><tt class="descname">SHORT</tt><a class="headerlink" href="#gltools.SHORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.UNSIGNED_SHORT">
+<tt class="descclassname">gltools.</tt><tt class="descname">UNSIGNED_SHORT</tt><a class="headerlink" href="#gltools.UNSIGNED_SHORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.INT">
+<tt class="descclassname">gltools.</tt><tt class="descname">INT</tt><a class="headerlink" href="#gltools.INT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.UNSIGNED_INT">
+<tt class="descclassname">gltools.</tt><tt class="descname">UNSIGNED_INT</tt><a class="headerlink" href="#gltools.UNSIGNED_INT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FLOAT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FLOAT</tt><a class="headerlink" href="#gltools.FLOAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.DOUBLE">
+<tt class="descclassname">gltools.</tt><tt class="descname">DOUBLE</tt><a class="headerlink" href="#gltools.DOUBLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="drawbuffermode">
+<h3>DrawBufferMode<a class="headerlink" href="#drawbuffermode" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.NONE">
+<tt class="descclassname">gltools.</tt><tt class="descname">NONE</tt><a class="headerlink" href="#gltools.NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FRONT_LEFT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FRONT_LEFT</tt><a class="headerlink" href="#gltools.FRONT_LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FRONT_RIGHT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FRONT_RIGHT</tt><a class="headerlink" href="#gltools.FRONT_RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.BACK_LEFT">
+<tt class="descclassname">gltools.</tt><tt class="descname">BACK_LEFT</tt><a class="headerlink" href="#gltools.BACK_LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.BACK_RIGHT">
+<tt class="descclassname">gltools.</tt><tt class="descname">BACK_RIGHT</tt><a class="headerlink" href="#gltools.BACK_RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FRONT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FRONT</tt><a class="headerlink" href="#gltools.FRONT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.BACK">
+<tt class="descclassname">gltools.</tt><tt class="descname">BACK</tt><a class="headerlink" href="#gltools.BACK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LEFT">
+<tt class="descclassname">gltools.</tt><tt class="descname">LEFT</tt><a class="headerlink" href="#gltools.LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.RIGHT">
+<tt class="descclassname">gltools.</tt><tt class="descname">RIGHT</tt><a class="headerlink" href="#gltools.RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FRONT_AND_BACK">
+<tt class="descclassname">gltools.</tt><tt class="descname">FRONT_AND_BACK</tt><a class="headerlink" href="#gltools.FRONT_AND_BACK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.AUX0">
+<tt class="descclassname">gltools.</tt><tt class="descname">AUX0</tt><a class="headerlink" href="#gltools.AUX0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.AUX1">
+<tt class="descclassname">gltools.</tt><tt class="descname">AUX1</tt><a class="headerlink" href="#gltools.AUX1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.AUX2">
+<tt class="descclassname">gltools.</tt><tt class="descname">AUX2</tt><a class="headerlink" href="#gltools.AUX2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.AUX3">
+<tt class="descclassname">gltools.</tt><tt class="descname">AUX3</tt><a class="headerlink" href="#gltools.AUX3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.CW">
+<tt class="descclassname">gltools.</tt><tt class="descname">CW</tt><a class="headerlink" href="#gltools.CW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.CCW">
+<tt class="descclassname">gltools.</tt><tt class="descname">CCW</tt><a class="headerlink" href="#gltools.CCW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettarget">
+<h3>GetTarget<a class="headerlink" href="#gettarget" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.DEPTH_TEST">
+<tt class="descclassname">gltools.</tt><tt class="descname">DEPTH_TEST</tt><a class="headerlink" href="#gltools.DEPTH_TEST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.BLEND">
+<tt class="descclassname">gltools.</tt><tt class="descname">BLEND</tt><a class="headerlink" href="#gltools.BLEND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.DITHER">
+<tt class="descclassname">gltools.</tt><tt class="descname">DITHER</tt><a class="headerlink" href="#gltools.DITHER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.CULL_FACE">
+<tt class="descclassname">gltools.</tt><tt class="descname">CULL_FACE</tt><a class="headerlink" href="#gltools.CULL_FACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="matrixmode">
+<h3>MatrixMode<a class="headerlink" href="#matrixmode" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.MODELVIEW">
+<tt class="descclassname">gltools.</tt><tt class="descname">MODELVIEW</tt><a class="headerlink" href="#gltools.MODELVIEW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.PROJECTION">
+<tt class="descclassname">gltools.</tt><tt class="descname">PROJECTION</tt><a class="headerlink" href="#gltools.PROJECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.TEXTURE">
+<tt class="descclassname">gltools.</tt><tt class="descname">TEXTURE</tt><a class="headerlink" href="#gltools.TEXTURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="lines">
+<h3>Lines<a class="headerlink" href="#lines" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.LINE_SMOOTH">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE_SMOOTH</tt><a class="headerlink" href="#gltools.LINE_SMOOTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="polygonmode">
+<h3>PolygonMode<a class="headerlink" href="#polygonmode" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.POINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POINT</tt><a class="headerlink" href="#gltools.POINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINE">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE</tt><a class="headerlink" href="#gltools.LINE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FILL">
+<tt class="descclassname">gltools.</tt><tt class="descname">FILL</tt><a class="headerlink" href="#gltools.FILL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON_OFFSET_LINE">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON_OFFSET_LINE</tt><a class="headerlink" href="#gltools.POLYGON_OFFSET_LINE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON_OFFSET_FILL">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON_OFFSET_FILL</tt><a class="headerlink" href="#gltools.POLYGON_OFFSET_FILL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="shadingmodel">
+<h3>ShadingModel<a class="headerlink" href="#shadingmodel" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.FLAT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FLAT</tt><a class="headerlink" href="#gltools.FLAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.SMOOTH">
+<tt class="descclassname">gltools.</tt><tt class="descname">SMOOTH</tt><a class="headerlink" href="#gltools.SMOOTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="hints">
+<h3>Hints<a class="headerlink" href="#hints" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.PERSPECTIVE_CORRECTION_HINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">PERSPECTIVE_CORRECTION_HINT</tt><a class="headerlink" href="#gltools.PERSPECTIVE_CORRECTION_HINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POINT_SMOOTH_HINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POINT_SMOOTH_HINT</tt><a class="headerlink" href="#gltools.POINT_SMOOTH_HINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LINE_SMOOTH_HINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">LINE_SMOOTH_HINT</tt><a class="headerlink" href="#gltools.LINE_SMOOTH_HINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.POLYGON_SMOOTH_HINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">POLYGON_SMOOTH_HINT</tt><a class="headerlink" href="#gltools.POLYGON_SMOOTH_HINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FOG_HINT">
+<tt class="descclassname">gltools.</tt><tt class="descname">FOG_HINT</tt><a class="headerlink" href="#gltools.FOG_HINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.DONT_CARE">
+<tt class="descclassname">gltools.</tt><tt class="descname">DONT_CARE</tt><a class="headerlink" href="#gltools.DONT_CARE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.FASTEST">
+<tt class="descclassname">gltools.</tt><tt class="descname">FASTEST</tt><a class="headerlink" href="#gltools.FASTEST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.NICEST">
+<tt class="descclassname">gltools.</tt><tt class="descname">NICEST</tt><a class="headerlink" href="#gltools.NICEST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="lighting">
+<h3>Lighting<a class="headerlink" href="#lighting" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.LIGHTING">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHTING</tt><a class="headerlink" href="#gltools.LIGHTING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT0">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT0</tt><a class="headerlink" href="#gltools.LIGHT0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT1">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT1</tt><a class="headerlink" href="#gltools.LIGHT1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT2">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT2</tt><a class="headerlink" href="#gltools.LIGHT2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT3">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT3</tt><a class="headerlink" href="#gltools.LIGHT3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT4">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT4</tt><a class="headerlink" href="#gltools.LIGHT4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT5">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT5</tt><a class="headerlink" href="#gltools.LIGHT5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT6">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT6</tt><a class="headerlink" href="#gltools.LIGHT6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT7">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT7</tt><a class="headerlink" href="#gltools.LIGHT7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.LIGHT_MODEL_TWO_SIDE">
+<tt class="descclassname">gltools.</tt><tt class="descname">LIGHT_MODEL_TWO_SIDE</tt><a class="headerlink" href="#gltools.LIGHT_MODEL_TWO_SIDE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="images">
+<h3>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.RGB">
+<tt class="descclassname">gltools.</tt><tt class="descname">RGB</tt><a class="headerlink" href="#gltools.RGB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.RGBA">
+<tt class="descclassname">gltools.</tt><tt class="descname">RGBA</tt><a class="headerlink" href="#gltools.RGBA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="texture">
+<h3>Texture<a class="headerlink" href="#texture" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.TEXTURE_2D">
+<tt class="descclassname">gltools.</tt><tt class="descname">TEXTURE_2D</tt><a class="headerlink" href="#gltools.TEXTURE_2D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="glext">
+<h3>GLEXT<a class="headerlink" href="#glext" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="gltools.MULTISAMPLE">
+<tt class="descclassname">gltools.</tt><tt class="descname">MULTISAMPLE</tt><a class="headerlink" href="#gltools.MULTISAMPLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.STATIC_DRAW">
+<tt class="descclassname">gltools.</tt><tt class="descname">STATIC_DRAW</tt><a class="headerlink" href="#gltools.STATIC_DRAW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ARRAY_BUFFER">
+<tt class="descclassname">gltools.</tt><tt class="descname">ARRAY_BUFFER</tt><a class="headerlink" href="#gltools.ARRAY_BUFFER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="gltools.ELEMENT_ARRAY_BUFFER">
+<tt class="descclassname">gltools.</tt><tt class="descname">ELEMENT_ARRAY_BUFFER</tt><a class="headerlink" href="#gltools.ELEMENT_ARRAY_BUFFER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 </div>
 
@@ -1021,11 +2223,42 @@ element array type.</td>
 <li><a class="reference internal" href="#colorrgba">ColorRGBA</a></li>
 <li><a class="reference internal" href="#material">Material</a></li>
 <li><a class="reference internal" href="#light">Light</a></li>
+<li><a class="reference internal" href="#image">Image</a></li>
+<li><a class="reference internal" href="#texturerect2d">TextureRect2D</a></li>
 <li><a class="reference internal" href="#clientbuffer">ClientBuffer</a></li>
 <li><a class="reference internal" href="#shaderprogram">ShaderProgram</a></li>
+<li><a class="reference internal" href="#glfw">GLFW</a></li>
 <li><a class="reference internal" href="#window">Window</a></li>
 <li><a class="reference internal" href="#ui">UI</a></li>
-<li><a class="reference internal" href="#opengl">openGL</a></li>
+<li><a class="reference internal" href="#glfw-constants">GLFW Constants</a><ul>
+<li><a class="reference internal" href="#action">ACTION</a></li>
+<li><a class="reference internal" href="#mouse">MOUSE</a></li>
+<li><a class="reference internal" href="#key">KEY</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opengl">OpenGL</a></li>
+<li><a class="reference internal" href="#opengl-constants">OpenGL Constants</a><ul>
+<li><a class="reference internal" href="#alphafunction">AlphaFunction</a></li>
+<li><a class="reference internal" href="#attribmask">AttribMask</a></li>
+<li><a class="reference internal" href="#beginmode">BeginMode</a></li>
+<li><a class="reference internal" href="#vertex-arrays">Vertex Arrays</a></li>
+<li><a class="reference internal" href="#blendingfactordest">BlendingFactorDest</a></li>
+<li><a class="reference internal" href="#blendingfactorsrc">BlendingFactorSrc</a></li>
+<li><a class="reference internal" href="#boolean-values">Boolean values</a></li>
+<li><a class="reference internal" href="#datatypes">Datatypes</a></li>
+<li><a class="reference internal" href="#drawbuffermode">DrawBufferMode</a></li>
+<li><a class="reference internal" href="#gettarget">GetTarget</a></li>
+<li><a class="reference internal" href="#matrixmode">MatrixMode</a></li>
+<li><a class="reference internal" href="#lines">Lines</a></li>
+<li><a class="reference internal" href="#polygonmode">PolygonMode</a></li>
+<li><a class="reference internal" href="#shadingmodel">ShadingModel</a></li>
+<li><a class="reference internal" href="#hints">Hints</a></li>
+<li><a class="reference internal" href="#lighting">Lighting</a></li>
+<li><a class="reference internal" href="#images">Images</a></li>
+<li><a class="reference internal" href="#texture">Texture</a></li>
+<li><a class="reference internal" href="#glext">GLEXT</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
