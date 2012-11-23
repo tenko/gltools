@@ -42,7 +42,7 @@ int glCheck() {
 }
     
 // load font
-void *_fonts;
+struct sth_stash *_fonts;
 
 void destroyFont(void)
 {
@@ -113,13 +113,16 @@ int drawText(int idx, float size, float x, float y, const char *text, float *dx)
 }
 
 // opengl 2.1 extensions
-#define GLEXTPROCSIZE 27
+#define GLEXTPROCSIZE 28
 int isGLExtLoaded = 0;
 
 int initGLExt(void)
 {
     // OpenGL 2.1 functions
     int status = 0;
+    
+    pglActiveTexture = (PFNGLACTIVETEXTUREPROC) glfwGetProcAddress("glActiveTexture");
+    if (pglActiveTexture) status++;
     
     pglCreateShader = (PFNGLCREATESHADERPROC) glfwGetProcAddress("glCreateShader");
     if (pglCreateShader) status++;
@@ -258,7 +261,7 @@ TextureRect2D::~TextureRect2D() {
 
 void TextureRect2D::blit(float x, float y) {
     glEnable(GL_TEXTURE_RECTANGLE);
-    glActiveTexture(GL_TEXTURE0);
+    pglActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_RECTANGLE, m_id);
     glColor3ub(255,255,255);
     
@@ -280,7 +283,7 @@ void TextureRect2D::blit(float x, float y) {
 void TextureRect2D::copy(GLenum mode = GL_BACK) {
     glReadBuffer(mode);
     glEnable(GL_TEXTURE_RECTANGLE);
-    glActiveTexture(GL_TEXTURE0);
+    pglActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_RECTANGLE, m_id);
     glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE,0,0,0,0,0,m_width, m_height);
     glBindTexture(GL_TEXTURE_RECTANGLE, 0);

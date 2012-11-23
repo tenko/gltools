@@ -205,7 +205,6 @@ void imguiRenderGLInit(void)
 		g_circleVerts[i*2+0] = cosf(a);
 		g_circleVerts[i*2+1] = sinf(a);
 	}
-	return true;
 }
 
 static void drawText(float x, float y, const char *text, int align, unsigned int col)

@@ -146,16 +146,19 @@ cdef class UI:
         return imguiCheck(c_text, checked, enabled)
 
 
-    cpdef bint collapse(self, text, char* subtext, bint checked, bint enabled):
+    cpdef bint collapse(self, text, subtext, bint checked, bint enabled):
         '''
         Collapse element
         '''
-        cdef char *c_text
+        cdef char *c_text, *c_subtext
         
         bytetext = unicode(text).encode('UTF-8','ignore')
         c_text = bytetext
         
-        return imguiCollapse(c_text, subtext, checked, enabled)
+        bytetext = unicode(subtext).encode('UTF-8','ignore')
+        c_subtext = bytetext
+        
+        return imguiCollapse(c_text, c_subtext, checked, enabled)
 
     cpdef label(self, text):
         '''

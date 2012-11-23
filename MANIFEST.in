@@ -1,0 +1,9 @@
+include Makefile
+include setup_build.py
+include setup_docs.py
+include version.py
+include MANIFEST.in
+include README.rst
+include LICENSE.txt
+recursive-include gltools *.py *.pyx *.pxi *.pxd *.rst
+prune gltools/@arch

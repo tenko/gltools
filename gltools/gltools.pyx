@@ -3,12 +3,18 @@
 #
 # This file is part of gltools - See LICENSE.txt
 #
+import sys
+
+if sys.hexversion > 0x03000000:
+    unicode = str
+    
 from geotools cimport *
 from GLToolsLib cimport *
 
 class GLError(Exception):
     pass
 
+include "Config.pxi"
 include "Utilities.pxi"
 include "Constants.pxi"
 include "GLFW.pxi"

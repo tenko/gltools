@@ -166,20 +166,6 @@ cdef class Window:
             raise GLError('window size not valid')
         glfwSetWindowSize(<GLFWwindow>self.thisptr, width, height)
     
-    cpdef tuple getPos(self):
-        '''
-        Get current window position
-        '''
-        cdef int x, y
-        glfwGetWindowPos(<GLFWwindow>self.thisptr, &x, &y)
-        return x, y
-    
-    cpdef setPos(self, int x, int y):
-        '''
-        Set current window position
-        '''
-        glfwSetWindowPos(<GLFWwindow>self.thisptr, x, y)
-    
     cpdef setClipboard(self, content):
         '''
         Set clipboard text
@@ -190,7 +176,7 @@ cdef class Window:
         '''
         Get clipboard text
         '''
-        cdef char *content = glfwGetClipboardString(<GLFWwindow>self.thisptr)
+        cdef const_char *content = glfwGetClipboardString(<GLFWwindow>self.thisptr)
         return content
     
     cpdef iconify(self):

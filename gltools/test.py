@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import sys
 import math
 import array
@@ -133,7 +134,7 @@ class MainWindow(gl.Window):
         
         
     def onSize(self, w, h):
-        #print 'onSize ', w, h
+        #print('onSize ', w, h)
         self.width, self.height = w - 1, h - 1
         
         if self.width > 1 and self.height > 1:
@@ -164,7 +165,7 @@ class MainWindow(gl.Window):
         return False
         
     def onRefresh(self):
-        #print 'onRefresh'
+        #print('onRefresh')
         if not self.running:
             return
         
@@ -237,7 +238,7 @@ class MainWindow(gl.Window):
         ui.item('Item 3', True)
         ui.unindent()
         if ui.button("Button 1", True):
-            print 'Button 1 pressed'
+            print('Button 1 pressed')
             
         ui.button("Button 2", False)
         ui.separator()
@@ -256,7 +257,7 @@ class MainWindow(gl.Window):
         ui.beginArea("Fixed Area", 10, h - 260, 200, 250)
         ui.label('Message')
         if ui.button("OK", True, 5, 210, 40):
-            print 'Button OK pressed'
+            print('Button OK pressed')
             
         ui.endArea()
         
@@ -287,14 +288,14 @@ class MainWindow(gl.Window):
             cam.pan(lastx, lasty, x, y, target = self.mouseCenter)
             update = True
         
-        #print 'onCursorPos ', x, y
+        #print('onCursorPos ', x, y)
         self.lastPos = x, y
         
         if ui or update:
             self.onRefresh()
         
     def onMouseButton(self, button, action):
-        #print 'onMouseButton ', button, action
+        #print('onMouseButton ', button, action)
         if action == gl.ACTION.PRESS:
             if button in {gl.MOUSE.LEFT, gl.MOUSE.RIGHT}:
                 # temporary rotation center to avoid exponential increase
@@ -306,7 +307,7 @@ class MainWindow(gl.Window):
         self.onRefresh()
     
     def onKey(self, key, action):
-        #print 'onKey ', key, action
+        #print('onKey ', key, action)
         if key == gl.KEY.ESCAPE:
             self.running = False
         elif key == gl.KEY.F1:
@@ -317,7 +318,7 @@ class MainWindow(gl.Window):
             img.writePNG('screenshot01.png')
             
     def onChar(self, ch):
-        #print 'onChar ', ch
+        #print('onChar ', ch)
         if ch == 'f':
             self.cam.zoomExtents(self.near, self.far)
             self.onRefresh()
@@ -336,7 +337,7 @@ class MainWindow(gl.Window):
         self.onRefresh()
         
     def onClose(self):
-        #print 'onClose'
+        #print('onClose')
         return True
 
 win = MainWindow(800, 600, title = u'title')

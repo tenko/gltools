@@ -4,14 +4,31 @@
 #
 
 # general imports
-from libc.stdint cimport uintptr_t
+IF UNAME_SYSNAME == "Windows":
+    ctypedef unsigned int uintptr_t
+ELSE:
+    from libc.stdint cimport uintptr_t
+
+cdef extern from *:
+    ctypedef char const_char "const char"
+    
 from libc.stdlib cimport malloc, free
 
-from libc.math cimport fmin, fmax, fabs, copysign
+from libc.math cimport fabs, copysign
 from libc.math cimport M_PI, sqrt, sin, cos, tan
     
 cimport cpython.array
 
+cdef inline double fmax(double a, double b):
+    if a < b:
+        return b
+    return a
+
+cdef inline double fmin(double a, double b):
+    if a > b:
+        return b
+    return a
+    
 # utility to get pointer from memoryview
 cdef void *getVoidPtr(arr):
     cdef double [::1] d_view

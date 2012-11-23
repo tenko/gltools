@@ -91,6 +91,12 @@ cdef class ShaderProgram:
         if vertex_src is None and fragment_src is None:
             ret = prog.build(NULL,NULL)
         else:
+            if not isinstance(vertex_src, bytes):
+                vertex_src = vertex_src.encode('ascii')
+                
+            if not isinstance(fragment_src, bytes):
+                fragment_src = fragment_src.encode('ascii')
+                
             ret = prog.build(vertex_src, fragment_src)
         
         if not ret:
@@ -110,7 +116,7 @@ cdef class ShaderProgram:
             raise GLError('lights must be between 1 and 8')
             
         INIT = "#define MAX_LIGHTS %d" % lights
-        FRAG_SRC = "\n".join((INIT, GLSL_FRAG_PONG_COMMON, GLSL_FRAG_PONG_DIFFUSE))
+        FRAG_SRC = b"\n".join((INIT.encode('ascii'), GLSL_FRAG_PONG_COMMON, GLSL_FRAG_PONG_DIFFUSE))
         
         ret.build(GLSL_VERTEX_PONG, FRAG_SRC)
         return ret
@@ -123,7 +129,7 @@ cdef class ShaderProgram:
             raise GLError('lights must be between 1 and 8')
             
         INIT = "#define MAX_LIGHTS %d" % lights
-        FRAG_SRC = "\n".join((INIT, GLSL_FRAG_PONG_COMMON, GLSL_FRAG_PONG_SPECULAR))
+        FRAG_SRC = b"\n".join((INIT.encode('ascii'), GLSL_FRAG_PONG_COMMON, GLSL_FRAG_PONG_SPECULAR))
         
         ret.build(GLSL_VERTEX_PONG, FRAG_SRC)
         return ret

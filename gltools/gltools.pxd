@@ -63,8 +63,6 @@ cdef class Window:
     cpdef setTitle(self, title)
     cpdef tuple getSize(self)
     cpdef setSize(self, int width, int height)
-    cpdef tuple getPos(self)
-    cpdef setPos(self, int x, int y)
     cpdef setClipboard(self, content)
     cpdef getClipboard(self)
     cpdef iconify(self)
@@ -122,7 +120,7 @@ cdef class UI:
                        int w = ?,  int h = ?)
     cpdef bint item(self, text, bint enabled)
     cpdef bint check(self, text, bint checked, bint enabled)
-    cpdef bint collapse(self, text, char* subtext, bint checked, bint enabled)
+    cpdef bint collapse(self, text, subtext, bint checked, bint enabled)
     cpdef label(self, text)
     cpdef value(self, text)
     cpdef float slider(self, text, float val, float vmin, float vmax,

@@ -20,7 +20,7 @@ void setErrorMessage(const char *err);
 int glCheck();
 
 // opengl font
-extern void *_fonts;
+extern struct sth_stash *_fonts;
 int initText(void);
 int beginText(void);
 int endText(void);
@@ -29,6 +29,7 @@ int drawText(int idx, float size, float x, float y, const char *text, float *dx)
 /* OpenGL 2.1 function pointers */
 extern int isGLExtLoaded;
 
+static PFNGLACTIVETEXTUREPROC           pglActiveTexture = NULL;
 static PFNGLGENBUFFERSPROC              pglGenBuffers = NULL;
 static PFNGLDELETEBUFFERSPROC           pglDeleteBuffers = NULL;
 static PFNGLCREATESHADERPROC            pglCreateShader = NULL;

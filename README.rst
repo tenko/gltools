@@ -19,12 +19,17 @@ The license is GPL v2.
 Building
 ========
 
- * Python 2.6 or later and Cython 0.17.
+ * Python 2.7/3.x and Cython 0.17 or later.
  * The geotools_ library.
- * GLFW_ v3.0 (not released, must be build from repo)
+ * GLFW_ v3.0 (not released, must be build from GIT repo)
  * OpenGL headers
  
-The extension have only been build on the Linux platform.
+Prebuild installers are available on the pypi_ site
+for the Windows platform.
+
+Note that currently I can not find a way to install the required
+Cython 'pxd' files with distutils and this file has to be copied
+manually.
 
 Documentation
 =============
@@ -36,3 +41,5 @@ See online Sphinx docs_
 .. _geotools: http://github.com/tenko/geotools
 
 .. _GLFW: http://github.com/elmindreda/glfw
+
+.. _pypi: http://pypi.python.org/pypi/gltools
