@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gltools documentation &mdash; gltools  documentation</title>
+    <title>Overview &mdash; gltools  documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -47,10 +47,9 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="gltools-documentation">
-<h1>gltools documentation<a class="headerlink" href="#gltools-documentation" title="Permalink to this headline">¶</a></h1>
-<p><strong>Overview</strong></p>
-<p>gltools is library for quickly creating OpenGL based
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p><strong>gltools</strong> is library for quickly creating OpenGL based
 application in Python/Cython with support for:</p>
 <blockquote>
 <div><ul class="simple">
@@ -64,6 +63,32 @@ application in Python/Cython with support for:</p>
 in most computers these days, even in a laptop&#8217;s integrated
 graphics.</p>
 <p>The license is GPL v2.</p>
+</div>
+<div class="section" id="building">
+<h1>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7/3.x and Cython 0.17 or later.</li>
+<li>The <a class="reference external" href="http://github.com/tenko/geotools">geotools</a> library.</li>
+<li><a class="reference external" href="http://github.com/elmindreda/glfw">GLFW</a> v3.0 (not released, must be build from GIT repo)</li>
+<li>OpenGL headers</li>
+</ul>
+</div></blockquote>
+<p>Prebuild installers are available on the <a class="reference external" href="http://pypi.python.org/pypi/gltools">pypi</a> site
+for the Windows platform.</p>
+<p>For Linux build scripts are available for ArchLinux in the <a class="reference external" href="https://aur.archlinux.org/packages/?O=0&amp;K=gltools">AUR</a>
+repository. These could be adapted to other Linux distros.</p>
+<p>Note that currently I can not find a way to install the required
+Cython &#8216;pxd&#8217; files with distutils and this file has to be copied
+manually.</p>
+</div>
+<div class="section" id="history">
+<h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>v0.1.1 : Added missing files and fix building against GLFW3 trunk.</li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="api-docs">
 <h1>API Docs<a class="headerlink" href="#api-docs" title="Permalink to this headline">¶</a></h1>
@@ -105,7 +130,9 @@ graphics.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">gltools documentation</a></li>
+<li><a class="reference internal" href="#">Overview</a></li>
+<li><a class="reference internal" href="#building">Building</a></li>
+<li><a class="reference internal" href="#history">History</a></li>
 <li><a class="reference internal" href="#api-docs">API Docs</a><ul>
 </ul>
 </li>
