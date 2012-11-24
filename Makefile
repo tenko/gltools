@@ -29,7 +29,6 @@ sdist: clean
 clean:
 	-rm -rf build dist
 	-rm -rf gltools/@docs/build
-	-rm -rf gltools/@docs/html
 	-rm gltools/@src/Config.pxi
 	-rm gltools/gltools.cpp gltools.so gltools/gltools.so MANIFEST
 	-find gltools -iname '*.so' -exec rm {} \;

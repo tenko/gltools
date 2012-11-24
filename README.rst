@@ -27,7 +27,7 @@ Building
 Prebuild installers are available on the pypi_ site
 for the Windows platform.
 
-For Linux build scripts are available for ArchLinux in the AUR
+For Linux build scripts are available for ArchLinux in the AUR_
 repository. These could be adapted to other Linux distros.
 
 Note that currently I can not find a way to install the required
@@ -51,3 +51,5 @@ See online Sphinx docs_
 .. _GLFW: http://github.com/elmindreda/glfw
 
 .. _pypi: http://pypi.python.org/pypi/gltools
+
+.. _AUR: https://aur.archlinux.org/packages/?O=0&K=gltools
