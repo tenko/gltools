@@ -119,17 +119,17 @@ cdef class Window:
         glfwSetWindowUserPointer(<GLFWwindow>self.thisptr, <void *>self)
         
         # Set callback functions
-        glfwSetWindowSizeCallback(cb_onSize)
-        glfwSetWindowRefreshCallback(cb_onRefresh)
-        glfwSetCursorPosCallback(cb_onCursorPos)
-        glfwSetMouseButtonCallback(cb_onMouseButton)
-        glfwSetKeyCallback(cb_onKey)
-        glfwSetCharCallback(cb_onChar)
-        glfwSetWindowCloseCallback(cb_onClose)
-        glfwSetWindowFocusCallback(cb_onFocus)
-        glfwSetCursorEnterCallback(cb_onEnter)
-        glfwSetScrollCallback(cb_onScroll)
-        glfwSetWindowIconifyCallback(cb_onIconify)
+        glfwSetWindowSizeCallback(<GLFWwindow>self.thisptr, cb_onSize)
+        glfwSetWindowRefreshCallback(<GLFWwindow>self.thisptr, cb_onRefresh)
+        glfwSetCursorPosCallback(<GLFWwindow>self.thisptr, cb_onCursorPos)
+        glfwSetMouseButtonCallback(<GLFWwindow>self.thisptr, cb_onMouseButton)
+        glfwSetKeyCallback(<GLFWwindow>self.thisptr, cb_onKey)
+        glfwSetCharCallback(<GLFWwindow>self.thisptr, cb_onChar)
+        glfwSetWindowCloseCallback(<GLFWwindow>self.thisptr, cb_onClose)
+        glfwSetWindowFocusCallback(<GLFWwindow>self.thisptr, cb_onFocus)
+        glfwSetCursorEnterCallback(<GLFWwindow>self.thisptr, cb_onEnter)
+        glfwSetScrollCallback(<GLFWwindow>self.thisptr, cb_onScroll)
+        glfwSetWindowIconifyCallback(<GLFWwindow>self.thisptr, cb_onIconify)
     
         # Get window size (may be different than the requested size)
         glfwGetWindowSize(<GLFWwindow>self.thisptr, &width, &height);
@@ -234,7 +234,7 @@ cdef class Window:
         cdef int x, y, lastX, lastY
         cdef double t
         
-        glfwSetCursorPosCallback(NULL)
+        glfwSetCursorPosCallback(<GLFWwindow>self.thisptr, NULL)
         glfwGetCursorPos(<GLFWwindow>self.thisptr, &lastX, &lastY)
         self.running = True
         while True:

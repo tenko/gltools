@@ -6,4 +6,5 @@ include MANIFEST.in
 include README.rst
 include LICENSE.txt
 recursive-include gltools *.py *.pyx *.pxi *.pxd *.rst
+recursive-include gltools *.cpp *.c *.h
 prune gltools/@arch

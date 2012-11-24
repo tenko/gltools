@@ -82,8 +82,8 @@ try:
         name = 'gltools',
         version = version.STRING,
         description = 'Library to create OpenGL based applications',
-        long_description = '''\
-**gltools** is library for quickly creating OpenGL based
+        long_description = \
+'''**gltools** is library for quickly creating OpenGL based
 application in Python/Cython with support for:
 
  * Access to vertex buffers and GLSL shaders
@@ -91,6 +91,10 @@ application in Python/Cython with support for:
  * Windows handling through GLFW
  * Saving framebuffer content to PNG file.
  * Simple GUI controls
+
+**History**
+
+ * v0.1.1 : Added missing files in source distribution
 ''',
         classifiers = [value for value in classifiers.split("\n") if value],
         author='Runar Tenfjord',

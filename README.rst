@@ -27,9 +27,17 @@ Building
 Prebuild installers are available on the pypi_ site
 for the Windows platform.
 
+For Linux build scripts are available for ArchLinux in the AUR
+repository. These could be adapted to other Linux distros.
+
 Note that currently I can not find a way to install the required
 Cython 'pxd' files with distutils and this file has to be copied
 manually.
+
+History
+=======
+
+ * v0.1.1 : Added missing files and fix building against GLFW3 trunk.
 
 Documentation
 =============
