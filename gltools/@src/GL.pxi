@@ -57,6 +57,12 @@ cpdef ClearDepth(double depth):
     '''
     glClearDepth(depth)
 
+cpdef DepthFunc(int func):
+    '''
+    Specify the value used for depth buffer comparisons
+    '''
+    glDepthFunc(func)
+    
 cpdef Color(ColorRGBA col):
     '''
     Sets the current color.
@@ -109,6 +115,12 @@ cpdef Hint(int target, int mode):
     specify implementation-specific hints
     '''
     glHint(target, mode)
+
+cpdef PointSize(float width):
+    '''
+    Specify the diameter of rasterized points
+    '''
+    glPointSize(width)
 
 cpdef LineWidth(float width):
     '''

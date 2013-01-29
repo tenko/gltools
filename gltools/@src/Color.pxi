@@ -89,7 +89,7 @@ cdef class ColorRGBA:
         self.red = value & 0x000000FF
         self.green = (value & 0x0000FF00) >> 8
         self.blue = (value & 0x00FF0000) >> 16
-        self.alpha = (value & 0xFF000000) >> 14
+        self.alpha = (value & 0xFF000000) >> 24
         
     cpdef tuple toFloatVector(self):
         '''
