@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-cdef extern from "GL/glfw3.h":
+cdef extern from "GLFW/glfw3.h":
     ctypedef unsigned int GLenum
     ctypedef unsigned char GLboolean
     ctypedef unsigned int GLbitfield

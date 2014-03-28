@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-cdef extern from "GL/glfw3.h":
+cdef extern from "GLFW/glfw3.h":
     cdef enum:
         GLFW_VERSION_MAJOR
         GLFW_VERSION_MINOR
@@ -169,10 +169,6 @@ cdef extern from "GL/glfw3.h":
         GLFW_JOYSTICK_15
         GLFW_JOYSTICK_16
         GLFW_JOYSTICK_LAST
-        
-        # glfwCreateWindow modes
-        GLFW_WINDOWED
-        GLFW_FULLSCREEN
 
         # glfwGetWindowParam tokens
         GLFW_ACTIVE
@@ -199,8 +195,6 @@ cdef extern from "GL/glfw3.h":
         # The following constants are used with both glfwGetWindowParam
         # and glfwWindowHint
         GLFW_CLIENT_API
-        GLFW_OPENGL_VERSION_MAJOR
-        GLFW_OPENGL_VERSION_MINOR
         GLFW_OPENGL_FORWARD_COMPAT
         GLFW_OPENGL_DEBUG_CONTEXT
         GLFW_OPENGL_PROFILE
@@ -258,23 +252,28 @@ cdef extern from "GL/glfw3.h":
     # OpenGL function pointer type
     ctypedef void (*GLFWglproc)()
     
+    # Monitor handle type
+    cdef struct GLFWmonitor:
+        pass
+    
     # Window handle type
-    ctypedef void* GLFWwindow
-
+    cdef struct GLFWwindow:
+        pass
+    
     # Function pointer types
     ctypedef void (* GLFWerrorfun)(int,char*)
-    ctypedef void (* GLFWwindowsizefun)(GLFWwindow,int,int)
-    ctypedef int  (* GLFWwindowclosefun)(GLFWwindow)
-    ctypedef void (* GLFWwindowrefreshfun)(GLFWwindow)
-    ctypedef void (* GLFWwindowfocusfun)(GLFWwindow,int)
-    ctypedef void (* GLFWwindowiconifyfun)(GLFWwindow,int)
-    ctypedef void (* GLFWmousebuttonfun)(GLFWwindow,int,int)
-    ctypedef void (* GLFWcursorposfun)(GLFWwindow,int,int)
-    ctypedef void (* GLFWcursorenterfun)(GLFWwindow,int)
-    ctypedef void (* GLFWscrollfun)(GLFWwindow,double,double)
-    ctypedef void (* GLFWkeyfun)(GLFWwindow,int,int)
-    ctypedef void (* GLFWcharfun)(GLFWwindow,int)
-    
+    ctypedef void (* GLFWwindowsizefun)(GLFWwindow *,int,int)
+    ctypedef int  (* GLFWwindowclosefun)(GLFWwindow *)
+    ctypedef void (* GLFWwindowrefreshfun)(GLFWwindow *)
+    ctypedef void (* GLFWwindowfocusfun)(GLFWwindow *,int)
+    ctypedef void (* GLFWwindowiconifyfun)(GLFWwindow *,int)
+    ctypedef void (* GLFWmousebuttonfun)(GLFWwindow *,int,int)
+    ctypedef void (* GLFWcursorposfun)(GLFWwindow *,double,double)
+    ctypedef void (* GLFWcursorenterfun)(GLFWwindow *,int)
+    ctypedef void (* GLFWscrollfun)(GLFWwindow *,double,double)
+    ctypedef void (* GLFWkeyfun)(GLFWwindow *,int,int)
+    ctypedef void (* GLFWcharfun)(GLFWwindow *,int)
+    ctypedef void (* GLFWmonitorfun)(c_GLFWmonitor,int)
     
     # The video mode structure used by glfwGetVideoModes
     cdef struct _GLFWvidmode:
@@ -283,14 +282,16 @@ cdef extern from "GL/glfw3.h":
         int redBits
         int blueBits
         int greenBits
+        int refreshRate
     
     ctypedef _GLFWvidmode GLFWvidmode
     
     # Gamma ramp
     cdef struct _GLFWgammaramp:
-        unsigned short red[GLFW_GAMMA_RAMP_SIZE]
-        unsigned short green[GLFW_GAMMA_RAMP_SIZE]
-        unsigned short blue[GLFW_GAMMA_RAMP_SIZE]
+        unsigned short* red
+        unsigned short* green
+        unsigned short* blue
+        unsigned int size
     
     ctypedef _GLFWgammaramp GLFWgammaramp
 
@@ -304,56 +305,68 @@ cdef extern from "GL/glfw3.h":
     int glfwGetError()
     char* glfwErrorString(int error)
     void glfwSetErrorCallback(GLFWerrorfun cbfun)
-
+    
+    # Monitor handling
+    GLFWmonitor *glfwGetMonitors(int* count)
+    GLFWmonitor *glfwGetPrimaryMonitor()
+    void glfwGetMonitorPos(GLFWmonitor *monitor, int* xpos, int* ypos)
+    void glfwGetMonitorPhysicalSize(GLFWmonitor *monitor, int* width, int* height)
+    char* glfwGetMonitorName(GLFWmonitor *monitor)
+    GLFWmonitorfun glfwSetMonitorCallback(GLFWmonitorfun cbfun)
+    
     # Video mode functions
     GLFWvidmode* glfwGetVideoModes(int* count)
-    void glfwGetDesktopMode(GLFWvidmode* mode)
-
+    const GLFWvidmode* glfwGetVideoMode(GLFWmonitor *monitor)
+    
     # Gamma ramp functions
-    void glfwSetGamma(float gamma)
-    void glfwGetGammaRamp(GLFWgammaramp* ramp)
-    void glfwSetGammaRamp(GLFWgammaramp* ramp)
+    void glfwSetGamma(GLFWmonitor *monitor, float gamma)
+    GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor *monitor)
+    void glfwSetGammaRamp(GLFWmonitor *monitor, GLFWgammaramp* ramp)
     
     # Window handling
+    void glfwDefaultWindowHints()
     void glfwWindowHint(int target, int hint)
-    GLFWwindow glfwCreateWindow(int width, int height, int mode, char* title, GLFWwindow share)
-    void glfwDestroyWindow(GLFWwindow window)
-    void glfwSetWindowTitle(GLFWwindow window, char* title)
-    void glfwGetWindowSize(GLFWwindow window, int* width, int* height)
-    void glfwSetWindowSize(GLFWwindow window, int width, int height)
-    void glfwGetWindowPos(GLFWwindow window, int* xpos, int* ypos)
-    void glfwSetWindowPos(GLFWwindow window, int xpos, int ypos)
-    void glfwIconifyWindow(GLFWwindow window)
-    void glfwRestoreWindow(GLFWwindow window)
-    void glfwShowWindow(GLFWwindow window)
-    void glfwHideWindow(GLFWwindow window)
-    int  glfwGetWindowParam(GLFWwindow window, int param)
-    void glfwSetWindowUserPointer(GLFWwindow window, void* pointer)
-    void* glfwGetWindowUserPointer(GLFWwindow window)
-    void glfwSetWindowSizeCallback(GLFWwindow window, GLFWwindowsizefun cbfun)
-    void glfwSetWindowCloseCallback(GLFWwindow window, GLFWwindowclosefun cbfun)
-    void glfwSetWindowRefreshCallback(GLFWwindow window, GLFWwindowrefreshfun cbfun)
-    void glfwSetWindowFocusCallback(GLFWwindow window, GLFWwindowfocusfun cbfun)
-    void glfwSetWindowIconifyCallback(GLFWwindow window, GLFWwindowiconifyfun cbfun)
+    GLFWwindow * glfwCreateWindow(int width, int height, char* title, GLFWmonitor *monitor, GLFWwindow * share)
+    int glfwWindowShouldClose(GLFWwindow * window)
+    void glfwSetWindowShouldClose(GLFWwindow * window, int value)
+    void glfwDestroyWindow(GLFWwindow * window)
+    void glfwSetWindowTitle(GLFWwindow * window, char* title)
+    void glfwGetWindowSize(GLFWwindow * window, int* width, int* height)
+    void glfwSetWindowSize(GLFWwindow * window, int width, int height)
+    void glfwGetWindowPos(GLFWwindow * window, int* xpos, int* ypos)
+    void glfwSetWindowPos(GLFWwindow * window, int xpos, int ypos)
+    void glfwIconifyWindow(GLFWwindow * window)
+    void glfwRestoreWindow(GLFWwindow * window)
+    void glfwShowWindow(GLFWwindow * window)
+    void glfwHideWindow(GLFWwindow * window)
+    GLFWmonitor *glfwGetWindowMonitor(GLFWwindow * window)
+    int  glfwGetWindowParam(GLFWwindow * window, int param)
+    void glfwSetWindowUserPointer(GLFWwindow * window, void* pointer)
+    void* glfwGetWindowUserPointer(GLFWwindow * window)
+    void glfwSetWindowSizeCallback(GLFWwindow * window, GLFWwindowsizefun cbfun)
+    void glfwSetWindowCloseCallback(GLFWwindow * window, GLFWwindowclosefun cbfun)
+    void glfwSetWindowRefreshCallback(GLFWwindow * window, GLFWwindowrefreshfun cbfun)
+    void glfwSetWindowFocusCallback(GLFWwindow * window, GLFWwindowfocusfun cbfun)
+    void glfwSetWindowIconifyCallback(GLFWwindow * window, GLFWwindowiconifyfun cbfun)
     
     # Event handling
     void glfwPollEvents()
     void glfwWaitEvents()
 
     # Input handling
-    int  glfwGetInputMode(GLFWwindow window, int mode)
-    void glfwSetInputMode(GLFWwindow window, int mode, int value)
-    int  glfwGetKey(GLFWwindow window, int key)
-    int  glfwGetMouseButton(GLFWwindow window, int button)
-    void glfwGetCursorPos(GLFWwindow window, int* xpos, int* ypos)
-    void glfwSetCursorPos(GLFWwindow window, int xpos, int ypos)
-    void glfwGetScrollOffset(GLFWwindow window, double* xoffset, double* yoffset)
-    void glfwSetKeyCallback(GLFWwindow window, GLFWkeyfun cbfun)
-    void glfwSetCharCallback(GLFWwindow window, GLFWcharfun cbfun)
-    void glfwSetMouseButtonCallback(GLFWwindow window, GLFWmousebuttonfun cbfun)
-    void glfwSetCursorPosCallback(GLFWwindow window, GLFWcursorposfun cbfun)
-    void glfwSetCursorEnterCallback(GLFWwindow window, GLFWcursorenterfun cbfun)
-    void glfwSetScrollCallback(GLFWwindow window, GLFWscrollfun cbfun)
+    int  glfwGetInputMode(GLFWwindow * window, int mode)
+    void glfwSetInputMode(GLFWwindow * window, int mode, int value)
+    int  glfwGetKey(GLFWwindow * window, int key)
+    int  glfwGetMouseButton(GLFWwindow * window, int button)
+    void glfwGetCursorPos(GLFWwindow * window, double* xpos, double* ypos)
+    void glfwSetCursorPos(GLFWwindow * window, double xpos, double ypos)
+    void glfwGetScrollOffset(GLFWwindow * window, double* xoffset, double* yoffset)
+    void glfwSetKeyCallback(GLFWwindow * window, GLFWkeyfun cbfun)
+    void glfwSetCharCallback(GLFWwindow * window, GLFWcharfun cbfun)
+    void glfwSetMouseButtonCallback(GLFWwindow * window, GLFWmousebuttonfun cbfun)
+    void glfwSetCursorPosCallback(GLFWwindow * window, GLFWcursorposfun cbfun)
+    void glfwSetCursorEnterCallback(GLFWwindow * window, GLFWcursorenterfun cbfun)
+    void glfwSetScrollCallback(GLFWwindow * window, GLFWscrollfun cbfun)
 
     # Joystick input
     int glfwGetJoystickParam(int joy, int param)
@@ -361,18 +374,18 @@ cdef extern from "GL/glfw3.h":
     int glfwGetJoystickButtons(int joy, unsigned char* buttons, int numbuttons)
 
     # Clipboard
-    void glfwSetClipboardString(GLFWwindow window, char* string)
-    char* glfwGetClipboardString(GLFWwindow window)
+    void glfwSetClipboardString(GLFWwindow * window, char* string)
+    char* glfwGetClipboardString(GLFWwindow * window)
 
     # Time
     double glfwGetTime()
     void   glfwSetTime(double time)
 
     # OpenGL support
-    void glfwMakeContextCurrent(GLFWwindow window)
-    GLFWwindow glfwGetCurrentContext()
-    void  glfwSwapBuffers(GLFWwindow window)
+    void glfwMakeContextCurrent(GLFWwindow * window)
+    GLFWwindow * glfwGetCurrentContext()
+    void  glfwSwapBuffers(GLFWwindow * window)
     void  glfwSwapInterval(int interval)
     int   glfwExtensionSupported(char* extension)
     GLFWglproc glfwGetProcAddress(char* procname)
-    void  glfwCopyContext(GLFWwindow src, GLFWwindow dst, unsigned long mask)
+    void  glfwCopyContext(GLFWwindow * src, GLFWwindow * dst, unsigned long mask)

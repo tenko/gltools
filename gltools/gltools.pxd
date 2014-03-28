@@ -53,8 +53,8 @@ cpdef Init()
 cpdef Terminate()
 cpdef double GetTime()
 cpdef SetTime(double time)
-cpdef SetGamma(float gamma)
-cpdef tuple GetDesktopSize()
+cpdef SetGamma(Window window, float gamma)
+cpdef tuple GetDesktopSize(Window window)
 
 cdef class Window:
     cdef void *thisptr
@@ -75,7 +75,7 @@ cdef class Window:
     cpdef mainLoop(self)  
     cpdef onSize(self, int w, int h)
     cpdef onRefresh(self)
-    cpdef onCursorPos(self, int x, int y)
+    cpdef onCursorPos(self, double x, double y)
     cpdef onMouseButton(self, int button, int action)
     cpdef onKey(self, int key, int action)
     cpdef onChar(self, ch)

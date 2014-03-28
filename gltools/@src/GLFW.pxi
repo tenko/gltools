@@ -46,22 +46,22 @@ cpdef SetTime(double time):
     glfwSetTime(time)
 
 # gamma value
-cpdef SetGamma(float gamma):
+cpdef SetGamma(Window window, float gamma):
     '''
     Set gamma value
     '''
-    Init()   
-    glfwSetGamma(gamma)
+    Init()
+    glfwSetGamma(glfwGetWindowMonitor(<GLFWwindow *>window.thisptr), gamma)
 
 # get desktop size
-cpdef tuple GetDesktopSize():
+cpdef tuple GetDesktopSize(Window window):
     '''
     Return desktop size
     '''
-    cdef GLFWvidmode vidmode
+    cdef GLFWvidmode *vidmode
     
     Init()
-    glfwGetDesktopMode(&vidmode)
+    vidmode = glfwGetVideoMode(glfwGetWindowMonitor(<GLFWwindow *>window.thisptr))
     return vidmode.width, vidmode.height
             
 
@@ -74,8 +74,7 @@ cdef class Window:
     '''
     def __init__(self, int width = -1, int height = -1, title = None,
                  bint fullscreen = False):
-        cdef GLFWvidmode vidmode
-        cdef int mode = GLFW_WINDOWED
+        cdef GLFWvidmode *vidmode
         cdef char *c_title
         
         # Initialise GLFW
@@ -90,20 +89,14 @@ cdef class Window:
         glfwWindowHint(GLFW_DEPTH_BITS, 24)
         glfwWindowHint(GLFW_STENCIL_BITS, 8)
         
-        glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2)
-        glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 1)
-        
         # open window
         if width < 0 or height < 0:
             # default to desktop size
-            glfwGetDesktopMode(&vidmode)
+            vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor())
             width, height = vidmode.width, vidmode.height
             glfwWindowHint(GLFW_RED_BITS, vidmode.redBits)
             glfwWindowHint(GLFW_GREEN_BITS, vidmode.greenBits)
             glfwWindowHint(GLFW_BLUE_BITS, vidmode.blueBits)
-        
-        if fullscreen:
-            mode = GLFW_FULLSCREEN
         
         # decode to UTF-8
         if title is None:
@@ -111,28 +104,28 @@ cdef class Window:
         bytetext = unicode(title).encode('UTF-8','ignore')
         c_title = bytetext
         
-        self.thisptr = glfwCreateWindow(width, height, mode, c_title, NULL)
+        self.thisptr = glfwCreateWindow(width, height, c_title, glfwGetPrimaryMonitor(), NULL)
         if self.thisptr == NULL:
             raise GLError('failed to open window')
         
         # Set pointer back to this class for callbacks
-        glfwSetWindowUserPointer(<GLFWwindow>self.thisptr, <void *>self)
+        glfwSetWindowUserPointer(<GLFWwindow *>self.thisptr, <void *>self)
         
         # Set callback functions
-        glfwSetWindowSizeCallback(<GLFWwindow>self.thisptr, cb_onSize)
-        glfwSetWindowRefreshCallback(<GLFWwindow>self.thisptr, cb_onRefresh)
-        glfwSetCursorPosCallback(<GLFWwindow>self.thisptr, cb_onCursorPos)
-        glfwSetMouseButtonCallback(<GLFWwindow>self.thisptr, cb_onMouseButton)
-        glfwSetKeyCallback(<GLFWwindow>self.thisptr, cb_onKey)
-        glfwSetCharCallback(<GLFWwindow>self.thisptr, cb_onChar)
-        glfwSetWindowCloseCallback(<GLFWwindow>self.thisptr, cb_onClose)
-        glfwSetWindowFocusCallback(<GLFWwindow>self.thisptr, cb_onFocus)
-        glfwSetCursorEnterCallback(<GLFWwindow>self.thisptr, cb_onEnter)
-        glfwSetScrollCallback(<GLFWwindow>self.thisptr, cb_onScroll)
-        glfwSetWindowIconifyCallback(<GLFWwindow>self.thisptr, cb_onIconify)
+        glfwSetWindowSizeCallback(<GLFWwindow *>self.thisptr, cb_onSize)
+        glfwSetWindowRefreshCallback(<GLFWwindow *>self.thisptr, cb_onRefresh)
+        glfwSetCursorPosCallback(<GLFWwindow *>self.thisptr, cb_onCursorPos)
+        glfwSetMouseButtonCallback(<GLFWwindow *>self.thisptr, cb_onMouseButton)
+        glfwSetKeyCallback(<GLFWwindow *>self.thisptr, cb_onKey)
+        glfwSetCharCallback(<GLFWwindow *>self.thisptr, cb_onChar)
+        glfwSetWindowCloseCallback(<GLFWwindow *>self.thisptr, cb_onClose)
+        glfwSetWindowFocusCallback(<GLFWwindow *>self.thisptr, cb_onFocus)
+        glfwSetCursorEnterCallback(<GLFWwindow *>self.thisptr, cb_onEnter)
+        glfwSetScrollCallback(<GLFWwindow *>self.thisptr, cb_onScroll)
+        glfwSetWindowIconifyCallback(<GLFWwindow *>self.thisptr, cb_onIconify)
     
         # Get window size (may be different than the requested size)
-        glfwGetWindowSize(<GLFWwindow>self.thisptr, &width, &height);
+        glfwGetWindowSize(<GLFWwindow *>self.thisptr, &width, &height);
         self.onSize(width, max(1, height))
     
     def __dealloc__(self):
@@ -148,14 +141,14 @@ cdef class Window:
         bytetext = unicode(title).encode('UTF-8','ignore')
         c_title = bytetext
         
-        glfwSetWindowTitle(<GLFWwindow>self.thisptr, c_title)
+        glfwSetWindowTitle(<GLFWwindow *>self.thisptr, c_title)
     
     cpdef tuple getSize(self):
         '''
         Get window size
         '''
         cdef int width, height
-        glfwGetWindowSize(<GLFWwindow>self.thisptr, &width, &height)
+        glfwGetWindowSize(<GLFWwindow *>self.thisptr, &width, &height)
         return width, height
     
     cpdef setSize(self, int width, int height):
@@ -164,64 +157,64 @@ cdef class Window:
         '''
         if width <= 0 or height <= 0:
             raise GLError('window size not valid')
-        glfwSetWindowSize(<GLFWwindow>self.thisptr, width, height)
+        glfwSetWindowSize(<GLFWwindow *>self.thisptr, width, height)
     
     cpdef setClipboard(self, content):
         '''
         Set clipboard text
         '''
-        glfwSetClipboardString(<GLFWwindow>self.thisptr, content)
+        glfwSetClipboardString(<GLFWwindow *>self.thisptr, content)
     
     cpdef getClipboard(self):
         '''
         Get clipboard text
         '''
-        cdef const_char *content = glfwGetClipboardString(<GLFWwindow>self.thisptr)
+        cdef const_char *content = glfwGetClipboardString(<GLFWwindow *>self.thisptr)
         return content
     
     cpdef iconify(self):
         '''
         Iconify window
         '''
-        glfwIconifyWindow(<GLFWwindow>self.thisptr)
+        glfwIconifyWindow(<GLFWwindow *>self.thisptr)
         
     cpdef restore(self):
         '''
         Restore window from iconification
         '''
-        glfwRestoreWindow(<GLFWwindow>self.thisptr)
+        glfwRestoreWindow(<GLFWwindow *>self.thisptr)
     
     cpdef show(self):
         '''
         Show window
         '''
-        glfwShowWindow(<GLFWwindow>self.thisptr)
+        glfwShowWindow(<GLFWwindow *>self.thisptr)
     
     cpdef hide(self):
         '''
         Hide window
         '''
-        glfwHideWindow(<GLFWwindow>self.thisptr)
+        glfwHideWindow(<GLFWwindow *>self.thisptr)
     
     cpdef close(self):
         '''
         Stop main loop and close window
         '''
         self.running = False
-        glfwDestroyWindow(<GLFWwindow>self.thisptr)
+        glfwDestroyWindow(<GLFWwindow *>self.thisptr)
         glfwTerminate()
         
     cpdef makeContextCurrent(self):
         '''
         Make window openGL context current
         '''
-        glfwMakeContextCurrent(<GLFWwindow>self.thisptr)
+        glfwMakeContextCurrent(<GLFWwindow *>self.thisptr)
         
     cpdef swapBuffers(self):
         '''
         Swap front and back buffers
         '''
-        glfwSwapBuffers(<GLFWwindow>self.thisptr)
+        glfwSwapBuffers(<GLFWwindow *>self.thisptr)
         
     cpdef mainLoop(self):
         '''
@@ -231,18 +224,18 @@ cdef class Window:
         handled to avoid to quick update.
         '''
         # keep waiting for events until running is False
-        cdef int x, y, lastX, lastY
+        cdef double x, y, lastX, lastY
         cdef double t
         
-        glfwSetCursorPosCallback(<GLFWwindow>self.thisptr, NULL)
-        glfwGetCursorPos(<GLFWwindow>self.thisptr, &lastX, &lastY)
+        glfwSetCursorPosCallback(<GLFWwindow *>self.thisptr, NULL)
+        glfwGetCursorPos(<GLFWwindow *>self.thisptr, &lastX, &lastY)
         self.running = True
         while True:
             # Wait for new events
             glfwWaitEvents()
             
             # Avoid to quick update due to mouse move
-            glfwGetCursorPos(<GLFWwindow>self.thisptr, &x, &y)
+            glfwGetCursorPos(<GLFWwindow *>self.thisptr, &x, &y)
             if x != lastX or y != lastY:
                 # in mouse move
                 t = glfwGetTime()
@@ -251,7 +244,7 @@ cdef class Window:
                     if glfwGetTime() - t > .025:
                         break
                 
-                glfwGetCursorPos(<GLFWwindow>self.thisptr, &x, &y)
+                glfwGetCursorPos(<GLFWwindow *>self.thisptr, &x, &y)
                 self.onCursorPos(x, y)
             
             lastX, lastY = x, y
@@ -276,7 +269,7 @@ cdef class Window:
         '''
         pass
     
-    cpdef onCursorPos(self, int x, int y):
+    cpdef onCursorPos(self, double x, double y):
         '''
         Callback on change of mouse cursor position
         '''
@@ -331,7 +324,7 @@ cdef class Window:
         return False
 
 # callback functions
-cdef void cb_onSize(GLFWwindow window, int w, int h):
+cdef void cb_onSize(GLFWwindow *window, int w, int h):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -339,14 +332,14 @@ cdef void cb_onSize(GLFWwindow window, int w, int h):
     except Exception as err:
         self.error = err
 
-cdef void cb_onRefresh(GLFWwindow window):
+cdef void cb_onRefresh(GLFWwindow *window):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     try:
         self.onRefresh()
     except Exception as err:
         self.error = err
         
-cdef void cb_onCursorPos(GLFWwindow window, int x, int y):
+cdef void cb_onCursorPos(GLFWwindow *window, double x, double y):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -354,7 +347,7 @@ cdef void cb_onCursorPos(GLFWwindow window, int x, int y):
     except Exception as err:
         self.error = err
     
-cdef void cb_onMouseButton(GLFWwindow window, int button, int action):
+cdef void cb_onMouseButton(GLFWwindow *window, int button, int action):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -362,7 +355,7 @@ cdef void cb_onMouseButton(GLFWwindow window, int button, int action):
     except Exception as err:
         self.error = err
 
-cdef void cb_onKey(GLFWwindow window, int key, int action):
+cdef void cb_onKey(GLFWwindow *window, int key, int action):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -370,7 +363,7 @@ cdef void cb_onKey(GLFWwindow window, int key, int action):
     except Exception as err:
         self.error = err
 
-cdef void cb_onChar(GLFWwindow window, int ch):
+cdef void cb_onChar(GLFWwindow *window, int ch):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     cdef char st[2]
     
@@ -382,7 +375,7 @@ cdef void cb_onChar(GLFWwindow window, int ch):
     except Exception as err:
         self.error = err
 
-cdef void cb_onFocus(GLFWwindow window, int status):
+cdef void cb_onFocus(GLFWwindow *window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -390,11 +383,11 @@ cdef void cb_onFocus(GLFWwindow window, int status):
     except Exception as err:
         self.error = err
 
-cdef void cb_onEnter(GLFWwindow window, int status):
+cdef void cb_onEnter(GLFWwindow *window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     self.onEnter(status)
     
-cdef void cb_onScroll(GLFWwindow window, double dx, double dy):
+cdef void cb_onScroll(GLFWwindow *window, double dx, double dy):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -402,7 +395,7 @@ cdef void cb_onScroll(GLFWwindow window, double dx, double dy):
     except Exception as err:
         self.error = err
 
-cdef void cb_onIconify(GLFWwindow window, int status):
+cdef void cb_onIconify(GLFWwindow *window, int status):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
@@ -410,7 +403,7 @@ cdef void cb_onIconify(GLFWwindow window, int status):
     except Exception as err:
         self.error = err
     
-cdef int cb_onClose(GLFWwindow window):
+cdef int cb_onClose(GLFWwindow *window):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     cdef int ret
     

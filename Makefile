@@ -32,6 +32,7 @@ clean:
 	-rm gltools/@src/Config.pxi
 	-rm gltools/gltools.cpp gltools.so gltools/gltools.so MANIFEST
 	-find gltools -iname '*.so' -exec rm {} \;
+	-find gltools -iname '*.dll' -exec rm {} \;
 	-find gltools -iname '*.pyc' -exec rm {} \;
 	-find gltools -iname '*.pyo' -exec rm {} \;
 	-find gltools -iname '*.pyd' -exec rm {} \;

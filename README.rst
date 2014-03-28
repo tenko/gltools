@@ -21,22 +21,16 @@ Building
 
  * Python 2.7/3.x and Cython 0.17 or later.
  * The geotools_ library.
- * GLFW_ v3.0 (not released, must be build from GIT repo)
+ * GLFW_ v3.0
  * OpenGL headers
- 
-Prebuild installers are available on the pypi_ site
-for the Windows platform.
 
 For Linux build scripts are available for ArchLinux in the AUR_
 repository. These could be adapted to other Linux distros.
 
-Note that currently I can not find a way to install the required
-Cython 'pxd' files with distutils and this file has to be copied
-manually.
-
 History
 =======
 
+ * v0.2.1 : Updated to released version of GLFW3
  * v0.1.1 : Added missing files and fix building against GLFW3 trunk.
 
 Documentation

@@ -7,7 +7,7 @@
 #include <string.h>
 #include <math.h>
 
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 #include <GL/glext.h>
 
 #define GLEXTPROCSIZE 27

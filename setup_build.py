@@ -39,6 +39,11 @@ if sys.platform == 'win32':
     LIBS.append('user32')
     LIBS.append('gdi32')
     OBJECTS.append('glfw3.lib')
+
+elif sys.platform == 'msys':
+    LIBS.append('OPENGL32')
+    LIBS.append('glfw3dll')
+    COMPILE_ARGS.append("-fpermissive")
     
 elif sys.platform == 'darwin':
     LINK_ARGS.extend(['-framework', 'OpenGL', '-arch', 'x86_64'])
@@ -120,7 +125,10 @@ application in Python/Cython with support for:
             ),
         ],
         
-        cmdclass = {'build_ext': build_ext}
+        cmdclass = {'build_ext': build_ext},
+        packages=[''],
+        package_dir={'': 'gltools'},
+        package_data={'': ['*.pxd']},
     )
 except:
     print('Traceback\n:%s\n' % str(sys.exc_info()[-2]))
