@@ -77,7 +77,7 @@ cdef class Window:
     cpdef onRefresh(self)
     cpdef onCursorPos(self, double x, double y)
     cpdef onMouseButton(self, int button, int action)
-    cpdef onKey(self, int key, int action)
+    cpdef onKey(self, int key, int scancode, int action, int mods)
     cpdef onChar(self, ch)
     cpdef onFocus(self, int status)
     cpdef onEnter(self, int status)

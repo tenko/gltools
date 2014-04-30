@@ -271,7 +271,7 @@ cdef extern from "GLFW/glfw3.h":
     ctypedef void (* GLFWcursorposfun)(GLFWwindow *,double,double)
     ctypedef void (* GLFWcursorenterfun)(GLFWwindow *,int)
     ctypedef void (* GLFWscrollfun)(GLFWwindow *,double,double)
-    ctypedef void (* GLFWkeyfun)(GLFWwindow *,int,int)
+    ctypedef void (* GLFWkeyfun)(GLFWwindow *,int,int,int,int)
     ctypedef void (* GLFWcharfun)(GLFWwindow *,int)
     ctypedef void (* GLFWmonitorfun)(c_GLFWmonitor,int)
     

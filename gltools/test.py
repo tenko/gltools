@@ -306,7 +306,7 @@ class MainWindow(gl.Window):
         
         self.onRefresh()
     
-    def onKey(self, key, action):
+    def onKey(self, key, scancode, action, mods):
         #print('onKey ', key, action)
         if key == gl.KEY.ESCAPE:
             self.running = False

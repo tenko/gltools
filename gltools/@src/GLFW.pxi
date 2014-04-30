@@ -280,8 +280,8 @@ cdef class Window:
         Callback on mouse button press or release
         '''
         pass
-    
-    cpdef onKey(self, int key, int action):
+
+    cpdef onKey(self, int key, int scancode, int action, int mods):
         '''
         Callback on key press or relase.
         '''
@@ -355,11 +355,11 @@ cdef void cb_onMouseButton(GLFWwindow *window, int button, int action):
     except Exception as err:
         self.error = err
 
-cdef void cb_onKey(GLFWwindow *window, int key, int action):
+cdef void cb_onKey(GLFWwindow *window, int key, int scancode, int action, int mods):
     cdef Window self = <Window>glfwGetWindowUserPointer(window)
     
     try:
-        self.onKey(key, action)
+        self.onKey(key, scancode, action, mods)
     except Exception as err:
         self.error = err
 
