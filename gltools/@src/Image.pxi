@@ -74,7 +74,7 @@ cdef class Image:
                 for i in range(self.bytesPerPixel):
                     pixels[swapOffset + i], pixels[offset + i] = pixels[offset + i], pixels[swapOffset + i]
     
-    cpdef writePNG(self, char *filename, int stride = 0):
+    cpdef writePNG(self, filename, int stride = 0):
         '''
         Write image to PNG file. Note that the file
         will be overwritten if not locked.
@@ -84,7 +84,11 @@ cdef class Image:
         
         Raises GLError on failure.
         '''
-        if not stbi_write_png(filename, self.width, self.height, self.bytesPerPixel,
+        cdef char *c_filename
+        bytetext = unicode(filename).encode('UTF-8','ignore')
+        c_filename = bytetext
+        
+        if not stbi_write_png(c_filename, self.width, self.height, self.bytesPerPixel,
                               self._buffer, stride):
             raise GLError("failed to write to PNG '%s'" % filename)
             

@@ -135,6 +135,12 @@ cdef extern from "GLFW/glfw3.h":
         GLFW_KEY_MENU
         GLFW_KEY_LAST
         
+        # Modifiers
+        GLFW_MOD_SHIFT
+        GLFW_MOD_CONTROL
+        GLFW_MOD_ALT
+        GLFW_MOD_SUPER
+
         # Mouse button definitions
         GLFW_MOUSE_BUTTON_1
         GLFW_MOUSE_BUTTON_2

@@ -142,7 +142,7 @@ cdef class Image:
     cdef __cythonbufferdefaults__ = {"ndim": 1, "mode": "c"}
     
     cpdef flipY(self)
-    cpdef writePNG(self, char *filename, int stride = ?)
+    cpdef writePNG(self, filename, int stride = ?)
     
 cpdef InitGLExt()
 cpdef int Check()

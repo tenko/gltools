@@ -310,6 +310,9 @@ class MainWindow(gl.Window):
         #print('onKey ', key, action)
         if key == gl.KEY.ESCAPE:
             self.running = False
+        elif key == gl.KEY.F:
+            self.cam.zoomExtents(self.near, self.far)
+            self.onRefresh()
         elif key == gl.KEY.F1:
             self.makeContextCurrent()
             img = gl.Image(self.width, self.height, gl.RGBA)
@@ -317,12 +320,6 @@ class MainWindow(gl.Window):
             img.flipY()
             img.writePNG('screenshot01.png')
             
-    def onChar(self, ch):
-        #print('onChar ', ch)
-        if ch == 'f':
-            self.cam.zoomExtents(self.near, self.far)
-            self.onRefresh()
-        
     def onScroll(self, scx, scy):
         x, y = self.lastPos
         self.uiScroll = -int(scy)
