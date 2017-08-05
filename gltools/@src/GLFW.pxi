@@ -104,7 +104,7 @@ cdef class Window:
         bytetext = unicode(title).encode('UTF-8','ignore')
         c_title = bytetext
         
-        self.thisptr = glfwCreateWindow(width, height, c_title, glfwGetPrimaryMonitor(), NULL)
+        self.thisptr = glfwCreateWindow(width, height, c_title, glfwGetPrimaryMonitor() if fullscreen else NULL, NULL)
         if self.thisptr == NULL:
             raise GLError('failed to open window')
         
